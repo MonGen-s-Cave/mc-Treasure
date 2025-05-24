@@ -63,6 +63,8 @@ public class TreasureChest {
 
         hologramId = "treasure-" + id;
         DHAPI.createHologram(hologramId, holoLoc, processedLines);
+
+        if (hasTimeLeftPlaceholder()) startHologramUpdateTask();
     }
 
     public void removeHologram() {
@@ -75,6 +77,16 @@ public class TreasureChest {
 
     private boolean hasTimeLeftPlaceholder() {
         return hologramLines.stream().anyMatch(line -> line.contains("{time-left}"));
+    }
+
+    private void startHologramUpdateTask() {
+        stopHologramUpdateTask();
+
+        if (hasTimeLeftPlaceholder()) {
+            hologramUpdateTask = McTreasure.getInstance().getScheduler().runAsyncTimer(() -> {
+                if (hologramEnabled && hologramId != null) setupHologram();
+            }, 20L, 20L);
+        }
     }
 
     private void stopHologramUpdateTask() {
@@ -101,7 +113,9 @@ public class TreasureChest {
     }
 
     private String getTimeLeftDisplay() {
-        if (cooldownMillis <= 0) return McTreasure.getInstance().getConfiguration().getString("placeholders.hologram.ready", "&a&lREADY TO OPEN&7!");
+        if (cooldownMillis <= 0) {
+            return McTreasure.getInstance().getConfiguration().getString("placeholders.hologram.ready", "&a&lREADY TO OPEN&7!");
+        }
 
         long shortestCooldown = Long.MAX_VALUE;
         long currentTime = System.currentTimeMillis();
@@ -110,6 +124,7 @@ public class TreasureChest {
         for (Long lastOpened : playerCooldowns.values()) {
             if (lastOpened != null && lastOpened > 0) {
                 long remainingTime = (lastOpened + cooldownMillis) - currentTime;
+
                 if (remainingTime > 0) {
                     hasActiveCooldown = true;
                     shortestCooldown = Math.min(shortestCooldown, remainingTime);
@@ -119,8 +134,7 @@ public class TreasureChest {
 
         if (!hasActiveCooldown || shortestCooldown == Long.MAX_VALUE) return McTreasure.getInstance().getConfiguration().getString("placeholders.hologram.ready", "&a&lREADY TO OPEN&7!");
 
-        long remainingSeconds = shortestCooldown / 1000;
-        String formattedTime = TimeUtils.formatTime(remainingSeconds);
+        String formattedTime = TimeUtils.formatTime(shortestCooldown);
         String timeLeftFormat = McTreasure.getInstance().getConfiguration().getString("placeholders.hologram.time-left", "&c%s");
 
         return String.format(timeLeftFormat, formattedTime);
@@ -154,8 +168,7 @@ public class TreasureChest {
     }
 
     public @NotNull OpenResult canPlayerOpen(@NotNull Player player) {
-        if (permission != null && !permission.isEmpty() && !player.hasPermission(permission))
-            return new OpenResult(false, MessageKeys.NO_PERMISSION.getMessage());
+        if (permission != null && !permission.isEmpty() && !player.hasPermission(permission)) return new OpenResult(false, MessageKeys.NO_PERMISSION.getMessage());
 
         if (cooldownMillis > 0) {
             long lastOpened = playerCooldowns.getOrDefault(player.getUniqueId(), 0L);
@@ -164,10 +177,7 @@ public class TreasureChest {
             if (lastOpened > 0) {
                 long remainingTime = (lastOpened + cooldownMillis) - currentTime;
 
-                if (remainingTime > 0) {
-                    long remainingSeconds = remainingTime / 1000;
-                    return new OpenResult(false, MessageKeys.COOLDOWN.getMessage().replace("{time}", TimeUtils.formatTime(remainingSeconds)));
-                }
+                if (remainingTime > 0) return new OpenResult(false, MessageKeys.COOLDOWN.getMessage().replace("{time}", TimeUtils.formatTime(remainingTime)));
             }
         }
 

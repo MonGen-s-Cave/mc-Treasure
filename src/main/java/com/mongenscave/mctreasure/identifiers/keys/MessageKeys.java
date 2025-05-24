@@ -58,7 +58,6 @@ public enum MessageKeys {
     }
 
     public @NotNull String getMessage() {
-        return MessageProcessor.process(language.getString(path))
-                .replace("%prefix%", MessageProcessor.process(language.getString("prefix")));
+        return MessageProcessor.process(language.getString(path)).replace("%prefix%", MessageProcessor.process(language.getString("prefix")));
     }
 }

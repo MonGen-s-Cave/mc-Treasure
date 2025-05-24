@@ -76,6 +76,10 @@ public class TreasureHologramMenu extends Menu {
                     case LEFT -> hologramHeight += 0.1;
                     case RIGHT -> hologramHeight -= 0.1;
                 }
+
+                updateHologramInRealTime();
+                open();
+                return;
             }
         }
 
@@ -132,28 +136,7 @@ public class TreasureHologramMenu extends Menu {
             inventory.setItem(i, lineItem);
         }
 
-        ItemStack heightItem = ItemKeys.HOLOGRAM_HEIGHT_ITEM.getItem();
-        ItemMeta heightMeta = heightItem.getItemMeta();
-
-        if (heightMeta != null) {
-            List<String> lore = heightMeta.getLore();
-
-            if (lore != null) {
-                for (int i = 0; i < lore.size(); i++) {
-                    String line = lore.get(i);
-
-                    if (line.contains("{height-status}")) {
-                        line = line.replace("{height-status}", String.format("%.1f", hologramHeight));
-                        lore.set(i, line);
-                    }
-                }
-                heightMeta.setLore(lore);
-            }
-
-            heightItem.setItemMeta(heightMeta);
-        }
-
-        setMenuItem(ItemKeys.HOLOGRAM_HEIGHT_ITEM);
+        setMenuItemWithPlaceholders();
         setMenuItem(ItemKeys.HOLOGRAM_CREATE_LINE);
         setMenuItem(ItemKeys.HOLOGRAM_SAVE);
     }
@@ -181,5 +164,40 @@ public class TreasureHologramMenu extends Menu {
 
         inventory.setItem(slot, item);
         slotToItemKeyMap.put(slot, itemKey);
+    }
+
+    private void setMenuItemWithPlaceholders() {
+        ItemStack item = PlaceholderUtils.applyPlaceholders(ItemKeys.HOLOGRAM_HEIGHT_ITEM.getItem(), chest);
+        int slot = ItemKeys.HOLOGRAM_HEIGHT_ITEM.getSlot();
+
+        ItemMeta meta = item.getItemMeta();
+
+        if (meta != null) {
+            if (meta.hasDisplayName()) {
+                String displayName = meta.getDisplayName();
+                displayName = displayName.replace("{height-status}", String.format("%.1f", hologramHeight));
+                meta.setDisplayName(displayName);
+            }
+
+            if (meta.hasLore()) {
+                List<String> lore = meta.getLore();
+                if (lore != null) {
+                    for (int i = 0; i < lore.size(); i++) {
+                        String line = lore.get(i);
+                        if (line.contains("{height-status}")) {
+                            line = line.replace("{height-status}", String.format("%.1f", hologramHeight));
+                            lore.set(i, line);
+                        }
+                    }
+                    meta.setLore(lore);
+                }
+            }
+            item.setItemMeta(meta);
+        }
+
+        item.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(ITEM_KEY, PersistentDataType.STRING, ItemKeys.HOLOGRAM_HEIGHT_ITEM.name()));
+
+        inventory.setItem(slot, item);
+        slotToItemKeyMap.put(slot, ItemKeys.HOLOGRAM_HEIGHT_ITEM);
     }
 }

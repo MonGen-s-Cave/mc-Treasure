@@ -7,7 +7,6 @@ import com.mongenscave.mctreasure.gui.models.TreasureInventoryMenu;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.manager.TreasureManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
-import com.mongenscave.mctreasure.processor.MessageProcessor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -25,7 +24,6 @@ import java.util.Objects;
 
 public class TreasureListener implements Listener {
     private final TreasureManager treasureManager = TreasureManager.getInstance();
-    private final McTreasure plugin = McTreasure.getInstance();
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerInteract(final @NotNull PlayerInteractEvent event) {
@@ -42,6 +40,14 @@ public class TreasureListener implements Listener {
 
         event.setCancelled(true);
 
+        if (chest.getPermission() != null && !chest.getPermission().isEmpty() && !player.hasPermission(chest.getPermission())) {
+            player.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 0.5f, 1.0f);
+
+            if (chest.isPushbackEnabled()) treasureManager.applyPushback(player, chest);
+            return;
+        }
+
         OpenResult result = chest.canPlayerOpen(player);
         if (!result.canOpen()) {
             player.sendMessage(Objects.requireNonNull(result.message()));
@@ -51,10 +57,14 @@ public class TreasureListener implements Listener {
             return;
         }
 
-        chest.recordPlayerOpen(player);
-
         new TreasureInventoryMenu(MenuController.getMenuUtils(player), chest).open();
         player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.5f, 1.0f);
+
+        chest.recordPlayerOpen(player);
+
+        if (chest.isHologramEnabled() && chest.getHologramLines().stream().anyMatch(line -> line.contains("{time-left}"))) {
+            chest.setupHologram();
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

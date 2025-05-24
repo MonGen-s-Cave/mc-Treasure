@@ -9,7 +9,7 @@ public class TimeUtils {
     public static String formatTime(long timeInMillis) {
         if (timeInMillis <= 0) return "0:00";
 
-        long totalSeconds = timeInMillis / 1000;
+        long totalSeconds = Math.max(0, timeInMillis / 1000);
         long hours = totalSeconds / 3600;
         long minutes = (totalSeconds % 3600) / 60;
         long seconds = totalSeconds % 60;
