@@ -34,5 +34,8 @@ messages:
       start: "%prefix% &aType the hologram, or &ccancel &ato abort the session!"
     location:
       start: "%prefix% &aBreak a block to set the location!"
+      input: "%prefix% &aLocation set successfully!"
   success-save: "%prefix% &aTreasure chest saved!"
   cooldown: "%prefix% &cWait &4{time} before opening again!"
+  item-obtained: "%prefix% &aYou found something..."
+  inventory-full: "%prefix% &cYour inventory is full!"

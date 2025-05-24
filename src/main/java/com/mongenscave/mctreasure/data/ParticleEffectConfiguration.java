@@ -34,25 +34,8 @@ public class ParticleEffectConfiguration {
         return config;
     }
 
-    public ParticleEffectConfiguration visibleTo(Player player) {
-        this.player = player;
-        this.visibleToAll = false;
-        return this;
-    }
-
-    public ParticleEffectConfiguration visibleToAll() {
-        this.visibleToAll = true;
-        this.player = null;
-        return this;
-    }
-
     public ParticleEffectConfiguration particle(Particle type) {
         this.particleType = type;
-        return this;
-    }
-
-    public ParticleEffectConfiguration color(Color color) {
-        this.particleColor = color;
         return this;
     }
 

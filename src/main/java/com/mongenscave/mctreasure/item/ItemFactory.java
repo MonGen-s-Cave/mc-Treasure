@@ -159,7 +159,7 @@ public interface ItemFactory {
     static String getPathFromItem(@Nullable ItemStack item) {
         if (item == null || !item.hasItemMeta()) return null;
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-        NamespacedKey key = new NamespacedKey(McTreasure.getInstance(), "itemKey");
+        NamespacedKey key = new NamespacedKey(McTreasure.getInstance(), "mcTreasure");
         return container.get(key, PersistentDataType.STRING);
     }
 

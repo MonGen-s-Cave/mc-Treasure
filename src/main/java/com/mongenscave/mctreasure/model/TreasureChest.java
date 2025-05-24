@@ -1,12 +1,13 @@
 package com.mongenscave.mctreasure.model;
 
+import com.artillexstudios.axapi.scheduler.ScheduledTask;
+import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.data.OpenResult;
 import com.mongenscave.mctreasure.data.ParticleEffectConfiguration;
 import com.mongenscave.mctreasure.identifiers.ParticleTypes;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.manager.TreasureManager;
 import com.mongenscave.mctreasure.particles.ParticleSystem;
-import com.mongenscave.mctreasure.processor.MessageProcessor;
 import com.mongenscave.mctreasure.utils.TimeUtils;
 import eu.decentsoftware.holograms.api.DHAPI;
 import lombok.Builder;
@@ -30,8 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TreasureChest {
     @Getter private final String id;
     private transient final ConcurrentHashMap<UUID, Long> playerCooldowns = new ConcurrentHashMap<>();
-    @Setter
-    @Getter private String name;
+    @Setter @Getter private String name;
     @Setter @Getter private Location location;
     @Setter @Getter private boolean pushbackEnabled;
     @Setter @Getter private double pushbackStrength;
@@ -47,6 +47,7 @@ public class TreasureChest {
     @Getter @Setter private boolean particleEnabled;
     private transient UUID particleEffectId;
     private transient String hologramId;
+    private transient ScheduledTask hologramUpdateTask;
 
     public void setupHologram() {
         if (!hologramEnabled || location == null || hologramLines == null || hologramLines.isEmpty()) {
@@ -58,12 +59,7 @@ public class TreasureChest {
 
         if (hologramId != null) DHAPI.removeHologram(hologramId);
 
-        List<String> processedLines = Collections.synchronizedList(new ArrayList<>());
-
-        for (String line : hologramLines) {
-            if (line.equals("%blank%")) processedLines.add("");
-            else processedLines.add(line);
-        }
+        List<String> processedLines = processHologramLines();
 
         hologramId = "treasure-" + id;
         DHAPI.createHologram(hologramId, holoLoc, processedLines);
@@ -74,6 +70,60 @@ public class TreasureChest {
             DHAPI.removeHologram(hologramId);
             hologramId = null;
         }
+        stopHologramUpdateTask();
+    }
+
+    private boolean hasTimeLeftPlaceholder() {
+        return hologramLines.stream().anyMatch(line -> line.contains("{time-left}"));
+    }
+
+    private void stopHologramUpdateTask() {
+        if (hologramUpdateTask != null && !hologramUpdateTask.isCancelled()) {
+            hologramUpdateTask.cancel();
+            hologramUpdateTask = null;
+        }
+    }
+
+    @NotNull
+    private List<String> processHologramLines() {
+        List<String> processedLines = Collections.synchronizedList(new ArrayList<>());
+
+        for (String line : hologramLines) {
+            if (line.equals("%blank%")) processedLines.add("");
+            else {
+                String processedLine = line;
+                if (processedLine.contains("{time-left}")) processedLine = processedLine.replace("{time-left}", getTimeLeftDisplay());
+                processedLines.add(processedLine);
+            }
+        }
+
+        return processedLines;
+    }
+
+    private String getTimeLeftDisplay() {
+        if (cooldownMillis <= 0) return McTreasure.getInstance().getConfiguration().getString("placeholders.hologram.ready", "&a&lREADY TO OPEN&7!");
+
+        long shortestCooldown = Long.MAX_VALUE;
+        long currentTime = System.currentTimeMillis();
+        boolean hasActiveCooldown = false;
+
+        for (Long lastOpened : playerCooldowns.values()) {
+            if (lastOpened != null && lastOpened > 0) {
+                long remainingTime = (lastOpened + cooldownMillis) - currentTime;
+                if (remainingTime > 0) {
+                    hasActiveCooldown = true;
+                    shortestCooldown = Math.min(shortestCooldown, remainingTime);
+                }
+            }
+        }
+
+        if (!hasActiveCooldown || shortestCooldown == Long.MAX_VALUE) return McTreasure.getInstance().getConfiguration().getString("placeholders.hologram.ready", "&a&lREADY TO OPEN&7!");
+
+        long remainingSeconds = shortestCooldown / 1000;
+        String formattedTime = TimeUtils.formatTime(remainingSeconds);
+        String timeLeftFormat = McTreasure.getInstance().getConfiguration().getString("placeholders.hologram.time-left", "&c%s");
+
+        return String.format(timeLeftFormat, formattedTime);
     }
 
     public void setupParticleEffect() {
@@ -138,5 +188,10 @@ public class TreasureChest {
         config.setParticleType(particleDisplay != null ? particleDisplay : Particle.FLAME);
         config.setDuration(0);
         return config;
+    }
+
+    public void cleanup() {
+        removeHologram();
+        removeParticleEffect();
     }
 }

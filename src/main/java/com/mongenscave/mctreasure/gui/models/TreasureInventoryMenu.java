@@ -3,6 +3,7 @@ package com.mongenscave.mctreasure.gui.models;
 import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.data.MenuController;
 import com.mongenscave.mctreasure.gui.Menu;
+import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import com.mongenscave.mctreasure.processor.MessageProcessor;
 import org.bukkit.Material;
@@ -45,9 +46,9 @@ public class TreasureInventoryMenu extends Menu {
                 player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 0.5f, 1.2f);
                 inventory.setItem(event.getSlot(), new ItemStack(Material.AIR));
 
-                player.sendMessage(MessageProcessor.process(McTreasure.getInstance().getLanguage().getString("messages.item-obtained", "&aYou obtained an item from the treasure chest!")));
+                player.sendMessage(MessageKeys.ITEM_OBTAINED.getMessage());
             } else {
-                player.sendMessage(MessageProcessor.process(McTreasure.getInstance().getLanguage().getString("messages.inventory-full", "&cYour inventory is full!")));
+                player.sendMessage(MessageKeys.INVENTORY_FULL.getMessage());
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 0.5f, 1.0f);
             }
         }

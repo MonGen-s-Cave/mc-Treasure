@@ -4,6 +4,7 @@ import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.data.MenuController;
 import com.mongenscave.mctreasure.data.OpenResult;
 import com.mongenscave.mctreasure.gui.models.TreasureInventoryMenu;
+import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.manager.TreasureManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import com.mongenscave.mctreasure.processor.MessageProcessor;
@@ -68,13 +69,7 @@ public class TreasureListener implements Listener {
 
         if (chest == null) return;
 
-        if (!player.hasPermission("ctreasure.admin.break")) {
-            event.setCancelled(true);
-            player.sendMessage(MessageProcessor.process(plugin.getLanguage().getString("messages.no-permission-break", "&cYou don't have permission to break treasure chests!")));
-            return;
-        }
-
-        player.sendMessage(MessageProcessor.process(plugin.getLanguage().getString("messages.confirm-break", "&eBreak the treasure chest using &6/ctreasure delete " + chest.getId() + " &einstead!")));
         event.setCancelled(true);
+        player.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
     }
 }

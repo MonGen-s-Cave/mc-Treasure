@@ -43,7 +43,7 @@ public class TreasureOverviewMenu extends Menu {
 
         event.setCancelled(true);
 
-        if (event.getSlot() == 53) {
+        if (event.getSlot() == ItemKeys.OVERVIEW_CREATE_TREASURE.getSlot()) {
             if (event.getClick() == ClickType.LEFT) {
                 String id = "treasure_" + UUID.randomUUID().toString().substring(0, 8);
                 TreasureChest treasure = treasureManager.createTreasure(id);
@@ -52,6 +52,7 @@ public class TreasureOverviewMenu extends Menu {
                 new TreasureEditMenu(MenuController.getMenuUtils(player), treasure).open();
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
             }
+
             return;
         }
 
@@ -59,19 +60,23 @@ public class TreasureOverviewMenu extends Menu {
         if (index >= 0 && index < treasureChests.size()) {
             TreasureChest treasure = treasureChests.get(index);
 
-            if (event.getClick() == ClickType.LEFT) {
-                new TreasureEditMenu(MenuController.getMenuUtils(player), treasure).open();
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.0f);
-            } else if (event.getClick() == ClickType.RIGHT) {
-                new TreasurePreviewMenu(MenuController.getMenuUtils(player), treasure).open();
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.0f);
-            } else if (event.getClick() == ClickType.DROP) {
-                player.closeInventory();
-                treasureManager.deleteTreasure(treasure.getId());
-                player.sendMessage(MessageProcessor.process("&cTreasure chest &e" + treasure.getName() + " &chas been deleted."));
-                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5f, 0.5f);
+            switch (event.getClick()) {
+                case LEFT -> {
+                    new TreasureEditMenu(MenuController.getMenuUtils(player), treasure).open();
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.0f);
+                }
 
-                new TreasureOverviewMenu(MenuController.getMenuUtils(player)).open();
+                case RIGHT -> {
+                    new TreasurePreviewMenu(MenuController.getMenuUtils(player), treasure).open();
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.0f);
+                }
+
+                case DROP -> {
+                    player.closeInventory();
+                    treasureManager.deleteTreasure(treasure.getId());
+                    player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5f, 0.5f);
+                    new TreasureOverviewMenu(MenuController.getMenuUtils(player)).open();
+                }
             }
         }
     }
@@ -85,7 +90,22 @@ public class TreasureOverviewMenu extends Menu {
             if (currentSlot < 53) inventory.setItem(currentSlot, createTreasureItem(treasure));
         });
 
-        inventory.setItem(53, ItemKeys.OVERVIEW_CREATE_TREASURE.getItem());
+        inventory.setItem(ItemKeys.OVERVIEW_CREATE_TREASURE.getSlot(), ItemKeys.OVERVIEW_CREATE_TREASURE.getItem());
+    }
+
+    @Override
+    public String getMenuName() {
+        return MenuKeys.MENU_OVERVIEW_TITLE.getString();
+    }
+
+    @Override
+    public int getSlots() {
+        return MenuKeys.MENU_OVERVIEW_SIZE.getInt();
+    }
+
+    @Override
+    public int getMenuTick() {
+        return 20;
     }
 
     @NotNull
@@ -95,7 +115,7 @@ public class TreasureOverviewMenu extends Menu {
         if (baseItem == null) {
             baseItem = new ItemStack(Material.BARREL);
             ItemMeta meta = baseItem.getItemMeta();
-            meta.setDisplayName(MessageProcessor.process("&f" + treasure.getName()));
+            meta.setDisplayName(MessageProcessor.process(treasure.getName()));
             baseItem.setItemMeta(meta);
             return baseItem;
         }
@@ -122,20 +142,5 @@ public class TreasureOverviewMenu extends Menu {
 
         result.setItemMeta(meta);
         return result;
-    }
-
-    @Override
-    public String getMenuName() {
-        return MenuKeys.MENU_OVERVIEW_TITLE.getString();
-    }
-
-    @Override
-    public int getSlots() {
-        return MenuKeys.MENU_OVERVIEW_SIZE.getInt();
-    }
-
-    @Override
-    public int getMenuTick() {
-        return 20;
     }
 }

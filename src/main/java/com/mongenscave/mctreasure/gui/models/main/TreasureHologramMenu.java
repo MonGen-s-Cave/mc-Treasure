@@ -9,26 +9,30 @@ import com.mongenscave.mctreasure.manager.TreasureManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import com.mongenscave.mctreasure.processor.MessageProcessor;
 import com.mongenscave.mctreasure.sessions.ChatSessions;
+import com.mongenscave.mctreasure.utils.PlaceholderUtils;
 import lombok.Getter;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("deprecation")
 public class TreasureHologramMenu extends Menu {
     private final TreasureChest chest;
-    @Getter
-    private final List<String> hologramLines;
+    @Getter private final List<String> hologramLines;
     private double hologramHeight;
+    private final ConcurrentHashMap<Integer, ItemKeys> slotToItemKeyMap = new ConcurrentHashMap<>();
+    private static final NamespacedKey ITEM_KEY = new NamespacedKey("mctreasure", "item_key");
 
     public TreasureHologramMenu(@NotNull MenuController menuController, @NotNull TreasureChest chest) {
         super(menuController);
@@ -46,50 +50,48 @@ public class TreasureHologramMenu extends Menu {
         if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
         event.setCancelled(true);
 
-        if (slot == 53) {
-            saveHologramChanges();
-            player.sendMessage(MessageKeys.SUCCESS_SAVE.getMessage());
-            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5f, 1.0f);
-            new TreasureEditMenu(MenuController.getMenuUtils(player), chest).open();
-            return;
-        }
+        ItemKeys clickedItemKey = slotToItemKeyMap.get(event.getSlot());
+        if (clickedItemKey == null) return;
 
-        if (slot == 52) {
-            hologramLines.add("%blank%");
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.0f);
-            updateHologramInRealTime();
-
-            open();
-            return;
-        }
-
-        if (slot == 51) {
-            if (event.getClick() == ClickType.LEFT) {
-                hologramHeight += 0.1;
-                player.sendMessage(MessageProcessor.process("&aHologram height increased to: &e" + String.format("%.1f", hologramHeight)));
-            } else if (event.getClick() == ClickType.RIGHT) {
-                hologramHeight -= 0.1;
-                player.sendMessage(MessageProcessor.process("&aHologram height decreased to: &e" + String.format("%.1f", hologramHeight)));
+        switch (clickedItemKey) {
+            case HOLOGRAM_SAVE -> {
+                saveHologramChanges();
+                player.sendMessage(MessageKeys.SUCCESS_SAVE.getMessage());
+                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5f, 1.0f);
+                new TreasureEditMenu(MenuController.getMenuUtils(player), chest).open();
+                return;
             }
 
-            chest.setHologramHeight(hologramHeight);
-            updateHologramInRealTime();
+            case HOLOGRAM_CREATE_LINE -> {
+                hologramLines.add("%blank%");
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.0f);
+                updateHologramInRealTime();
 
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.0f);
-            return;
+                open();
+                return;
+            }
+
+            case HOLOGRAM_HEIGHT_ITEM -> {
+                switch (event.getClick()) {
+                    case LEFT -> hologramHeight += 0.1;
+                    case RIGHT -> hologramHeight -= 0.1;
+                }
+            }
         }
 
         if (slot < hologramLines.size()) {
-            if (event.getClick() == ClickType.LEFT) {
-                player.closeInventory();
-                ChatSessions.editHologramLine(player, slot, this);
-            } else if (event.getClick() == ClickType.DROP) {
-                hologramLines.remove(slot);
+            switch (event.getClick()) {
+                case LEFT -> {
+                    player.closeInventory();
+                    ChatSessions.editHologramLine(player, slot, this);
+                }
 
-                updateHologramInRealTime();
-
-                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5f, 1.0f);
-                open();
+                case DROP -> {
+                    hologramLines.remove(slot);
+                    updateHologramInRealTime();
+                    player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5f, 1.0f);
+                    open();
+                }
             }
         }
     }
@@ -132,12 +134,14 @@ public class TreasureHologramMenu extends Menu {
 
         ItemStack heightItem = ItemKeys.HOLOGRAM_HEIGHT_ITEM.getItem();
         ItemMeta heightMeta = heightItem.getItemMeta();
+
         if (heightMeta != null) {
             List<String> lore = heightMeta.getLore();
 
             if (lore != null) {
                 for (int i = 0; i < lore.size(); i++) {
                     String line = lore.get(i);
+
                     if (line.contains("{height-status}")) {
                         line = line.replace("{height-status}", String.format("%.1f", hologramHeight));
                         lore.set(i, line);
@@ -149,9 +153,9 @@ public class TreasureHologramMenu extends Menu {
             heightItem.setItemMeta(heightMeta);
         }
 
-        inventory.setItem(51, heightItem);
-        inventory.setItem(52, ItemKeys.HOLOGRAM_CREATE_LINE.getItem());
-        inventory.setItem(53, ItemKeys.HOLOGRAM_SAVE.getItem());
+        setMenuItem(ItemKeys.HOLOGRAM_HEIGHT_ITEM);
+        setMenuItem(ItemKeys.HOLOGRAM_CREATE_LINE);
+        setMenuItem(ItemKeys.HOLOGRAM_SAVE);
     }
 
     @Override
@@ -167,5 +171,15 @@ public class TreasureHologramMenu extends Menu {
     @Override
     public int getMenuTick() {
         return 20;
+    }
+
+    private void setMenuItem(@NotNull ItemKeys itemKey) {
+        ItemStack item = PlaceholderUtils.applyPlaceholders(itemKey.getItem(), chest);
+        int slot = itemKey.getSlot();
+
+        item.editMeta(meta -> meta.getPersistentDataContainer().set(ITEM_KEY, PersistentDataType.STRING, itemKey.name()));
+
+        inventory.setItem(slot, item);
+        slotToItemKeyMap.put(slot, itemKey);
     }
 }

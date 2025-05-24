@@ -66,7 +66,7 @@ public class TreasureManager {
                 .pushbackEnabled(true)
                 .pushbackStrength(1.0)
                 .hologramEnabled(false)
-                .hologramLines(Collections.synchronizedList(new ArrayList<>(List.of("&6&lTreasure Chest", "&7Open me!"))))
+                .hologramLines(Collections.synchronizedList(new ArrayList<>(List.of("&6&lTreasure Chest", "{time-left}"))))
                 .cooldownMillis(0)
                 .permission("")
                 .size(27)
@@ -338,6 +338,7 @@ public class TreasureManager {
         for (TreasureChest chest : treasureChests.values()) {
             if (chest.getLocation() != null && chest.getLocation().equals(location)) return chest;
         }
+
         return null;
     }
 }

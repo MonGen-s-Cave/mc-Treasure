@@ -41,4 +41,8 @@ public enum ItemKeys {
     public ItemStack getItem() {
         return ItemFactory.createItemFromString(path, McTreasure.getInstance().getGuis()).orElse(null);
     }
+
+    public int getSlot() {
+        return McTreasure.getInstance().getGuis().getInt(path + ".slot");
+    }
 }

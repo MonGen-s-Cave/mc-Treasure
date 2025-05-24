@@ -2,9 +2,9 @@ package com.mongenscave.mctreasure.listener;
 
 import com.mongenscave.mctreasure.data.MenuController;
 import com.mongenscave.mctreasure.gui.models.main.TreasureEditMenu;
+import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.manager.TreasureManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
-import com.mongenscave.mctreasure.processor.MessageProcessor;
 import com.mongenscave.mctreasure.sessions.LocationSession;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -31,7 +31,7 @@ public class LocationSessionListener implements Listener {
                 chest.setLocation(location);
                 chest.setupHologram();
                 TreasureManager.getInstance().saveTreasures();
-                player.sendMessage(MessageProcessor.process("&aLocation set to the block's position!"));
+                player.sendMessage(MessageKeys.SESSION_LOCATION_INPUT.getMessage());
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5f, 1.0f);
                 LocationSession.exitSettingLocation(player);
                 new TreasureEditMenu(MenuController.getMenuUtils(player), chest).open();

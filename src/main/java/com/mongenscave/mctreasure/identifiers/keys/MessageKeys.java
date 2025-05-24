@@ -42,10 +42,13 @@ public enum MessageKeys {
     SESSION_HOLOGRAM_START("messages.sessions.hologram.start"),
 
     SESSION_LOCATION_START("messages.sessions.location.start"),
+    SESSION_LOCATION_INPUT("messages.sessions.location.input"),
 
     SUCCESS_SAVE("messages.success-save"),
+    ITEM_OBTAINED("messages.item-obtained"),
 
-    COOLDOWN("messages.cooldown");
+    COOLDOWN("messages.cooldown"),
+    INVENTORY_FULL("messages.inventory-full");
 
     private static final Config language = McTreasure.getInstance().getLanguage();
     private final String path;

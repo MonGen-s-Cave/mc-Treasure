@@ -35,14 +35,12 @@ public class Helix extends AbstractParticleEffect {
             Location particleLoc2 = createLocation(x2, y, z2);
 
             if (particleLoc1 != null) {
-                if (config.getParticleType() == Particle.DUST)
-                    spawnDustParticle(particleLoc1, config.getParticleColor(), config.getParticleSize());
+                if (config.getParticleType() == Particle.DUST) spawnDustParticle(particleLoc1, config.getParticleColor(), config.getParticleSize());
                 else spawnParticle(particleLoc1, config.getParticleType(), config.getParticleSpeed());
             }
 
             if (particleLoc2 != null) {
-                if (config.getParticleType() == Particle.DUST)
-                    spawnDustParticle(particleLoc2, config.getParticleColor(), config.getParticleSize());
+                if (config.getParticleType() == Particle.DUST) spawnDustParticle(particleLoc2, config.getParticleColor(), config.getParticleSize());
                 else spawnParticle(particleLoc2, config.getParticleType(), config.getParticleSpeed());
             }
         }

@@ -41,13 +41,11 @@ public class TreasureItemsMenu extends Menu {
 
         if (event.getSlot() == getSlots() - 1) {
             event.setCancelled(true);
-
             updateItemsFromInventory();
             chest.setItems(items);
             TreasureManager.getInstance().saveTreasures();
             player.sendMessage(MessageKeys.SUCCESS_SAVE.getMessage());
             player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5f, 1.0f);
-
             new TreasureEditMenu(MenuController.getMenuUtils(player), chest).open();
             return;
         }

@@ -26,8 +26,7 @@ public final class McTreasure extends ZapperJavaPlugin {
     @Getter BukkitScheduler scheduler;
     @Getter Config guis;
     @Getter Config treasures;
-    @Getter
-    ParticleSystem particleSystem;
+    @Getter ParticleSystem particleSystem;
     Config config;
 
     @Override
