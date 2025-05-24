@@ -5,7 +5,7 @@ plugins {
     id("io.freefair.lombok") version("8.11")
 }
 
-group = "net.netherpulse"
+group = "com.mongenscave"
 version = "1.0.0"
 
 repositories {
@@ -35,7 +35,7 @@ java {
 
 zapper {
     libsFolder = "libs"
-    relocationPrefix = "net.netherpulse.nptreasure"
+    relocationPrefix = "com.mongenscave.mctreasure"
 
     repositories { includeProjectRepositories() }
 

@@ -1,6 +1,6 @@
 name: NpTreasure
 version: '1.0.0'
-main: net.netherpulse.nptreasure.NpTreasure
+main: com.mongenscave.mctreasure.McTreasure
 api-version: '1.18'
 authors: [coma112]
 softdepend: [DecentHolograms]
