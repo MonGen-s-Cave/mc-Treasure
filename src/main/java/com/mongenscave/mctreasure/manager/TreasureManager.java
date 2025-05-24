@@ -65,7 +65,7 @@ public class TreasureManager {
                 .name("&6&lTreasure Chest")
                 .pushbackEnabled(true)
                 .pushbackStrength(1.0)
-                .hologramEnabled(true)
+                .hologramEnabled(false)
                 .hologramLines(Collections.synchronizedList(new ArrayList<>(List.of("&6&lTreasure Chest", "&7Open me!"))))
                 .cooldownMillis(0)
                 .permission("")
@@ -134,23 +134,20 @@ public class TreasureManager {
                 String name = chestSection.getString("name", "&6&lTreasure Chest");
                 String locationStr = chestSection.getString("location");
                 Location location = locationStr != null ? LocationUtils.deserialize(locationStr) : null;
-
                 boolean pushbackEnabled = chestSection.getBoolean("pushback.enabled", true);
                 double pushbackStrength = chestSection.getDouble("pushback.strength", 1.0);
-
                 boolean hologramEnabled = chestSection.getBoolean("hologram.enabled", true);
                 List<String> hologramLines = chestSection.getStringList("hologram.lines");
 
-                if (hologramLines.isEmpty())
-                    hologramLines = Collections.synchronizedList(new ArrayList<>(List.of("&6&lTreasure Chest", "&7Open me!")));
+                if (hologramLines.isEmpty()) hologramLines = Collections.synchronizedList(new ArrayList<>(List.of("&6&lTreasure Chest", "&7Open me!")));
 
                 long cooldownMillis = chestSection.getLong("cooldown", 3600000L);
                 String permission = chestSection.getString("permission", "");
                 int size = chestSection.getInt("size", 27);
-
                 boolean particleEnabled = chestSection.getBoolean("particle.enabled", false);
                 String particleTypeName = chestSection.getString("particle.type", "HELIX");
                 ParticleTypes particleType;
+
                 try {
                     particleType = ParticleTypes.valueOf(particleTypeName.toUpperCase());
                 } catch (IllegalArgumentException exception) {
@@ -164,10 +161,7 @@ public class TreasureManager {
                     for (String itemKey : itemsSection.getRoutesAsStrings(false)) {
                         Section itemSection = itemsSection.getSection(itemKey);
 
-                        if (itemSection != null) {
-                            ItemFactory.buildItem(itemSection, "treasures." + id + ".items." + itemKey)
-                                    .ifPresent(items::add);
-                        }
+                        if (itemSection != null) ItemFactory.buildItem(itemSection, "treasures." + id + ".items." + itemKey).ifPresent(items::add);
                     }
                 }
 
@@ -214,8 +208,7 @@ public class TreasureManager {
 
                 treasuresConfig.set("treasures." + id + ".name", chest.getName());
 
-                if (chest.getLocation() != null)
-                    treasuresConfig.set("treasures." + id + ".location", LocationUtils.serialize(chest.getLocation()));
+                if (chest.getLocation() != null) treasuresConfig.set("treasures." + id + ".location", LocationUtils.serialize(chest.getLocation()));
 
                 treasuresConfig.set("treasures." + id + ".pushback.enabled", chest.isPushbackEnabled());
                 treasuresConfig.set("treasures." + id + ".pushback.strength", chest.getPushbackStrength());

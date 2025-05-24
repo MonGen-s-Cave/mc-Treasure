@@ -3,9 +3,11 @@ package com.mongenscave.mctreasure.model;
 import com.mongenscave.mctreasure.data.OpenResult;
 import com.mongenscave.mctreasure.data.ParticleEffectConfiguration;
 import com.mongenscave.mctreasure.identifiers.ParticleTypes;
+import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.manager.TreasureManager;
 import com.mongenscave.mctreasure.particles.ParticleSystem;
 import com.mongenscave.mctreasure.processor.MessageProcessor;
+import com.mongenscave.mctreasure.utils.TimeUtils;
 import eu.decentsoftware.holograms.api.DHAPI;
 import lombok.Builder;
 import lombok.Data;
@@ -103,7 +105,7 @@ public class TreasureChest {
 
     public @NotNull OpenResult canPlayerOpen(@NotNull Player player) {
         if (permission != null && !permission.isEmpty() && !player.hasPermission(permission))
-            return new OpenResult(false, MessageProcessor.process("&cYou don't have permission to open this chest!"));
+            return new OpenResult(false, MessageKeys.NO_PERMISSION.getMessage());
 
         if (cooldownMillis > 0) {
             long lastOpened = playerCooldowns.getOrDefault(player.getUniqueId(), 0L);
@@ -114,7 +116,7 @@ public class TreasureChest {
 
                 if (remainingTime > 0) {
                     long remainingSeconds = remainingTime / 1000;
-                    return new OpenResult(false, MessageProcessor.process("&cYou must wait &e" + remainingSeconds + " &cseconds before opening this chest again!"));
+                    return new OpenResult(false, MessageKeys.COOLDOWN.getMessage().replace("{time}", TimeUtils.formatTime(remainingSeconds)));
                 }
             }
         }
@@ -132,6 +134,7 @@ public class TreasureChest {
     @NotNull
     private ParticleEffectConfiguration createParticleConfig() {
         ParticleEffectConfiguration config = ParticleEffectConfiguration.at(location.clone().add(0.5, 0.5, 0.5));
+
         config.setParticleType(particleDisplay != null ? particleDisplay : Particle.FLAME);
         config.setDuration(0);
         return config;

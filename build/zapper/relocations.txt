@@ -1,1 +1,1 @@
-com.artillexstudios.axapi:net.netherpulse.nptreasure.axapi
+com.artillexstudios.axapi:com.mongenscave.mctreasure.axapi

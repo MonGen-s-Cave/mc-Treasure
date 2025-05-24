@@ -35,3 +35,4 @@ messages:
     location:
       start: "%prefix% &aBreak a block to set the location!"
   success-save: "%prefix% &aTreasure chest saved!"
+  cooldown: "%prefix% &cWait &4{time} before opening again!"

@@ -90,7 +90,7 @@ edit-menu:
         - ""
     edit-size:
       slot: 16
-      material: "RESIN_CLUMP"
+      material: "BOWL"
       name: "&6&lSET SIZE"
       lore:
         - ""

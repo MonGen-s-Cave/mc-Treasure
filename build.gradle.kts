@@ -15,11 +15,12 @@ repositories {
     maven("https://oss.sonatype.org/content/groups/public/")
     maven("https://jitpack.io")
     maven("https://repo.artillex-studios.com/releases")
-    maven ("https://nexus.hc.to/content/repositories/pub_releases")
+    maven("https://nexus.hc.to/content/repositories/pub_releases")
 }
 
 dependencies {
     implementation("com.artillexstudios.axapi:axapi:1.4.557:all")
+
     zap("com.github.User-19fff:EasierChatSetup:7485c3412c")
 
     compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")

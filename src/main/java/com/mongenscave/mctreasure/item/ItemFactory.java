@@ -2,6 +2,7 @@ package com.mongenscave.mctreasure.item;
 
 import com.artillexstudios.axapi.config.Config;
 import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.block.implementation.Section;
+import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.processor.MessageProcessor;
 import com.mongenscave.mctreasure.utils.LoggerUtils;
 import org.bukkit.Material;
@@ -10,8 +11,11 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,6 +92,12 @@ public interface ItemFactory {
             boolean unbreakable = section.getBoolean("unbreakable", false);
             if (unbreakable) item.editMeta(meta -> meta.setUnbreakable(true));
 
+            item.editMeta(meta -> {
+                PersistentDataContainer pdc = meta.getPersistentDataContainer();
+                NamespacedKey key = new NamespacedKey(McTreasure.getInstance(), "mcTreasure");
+                pdc.set(key, PersistentDataType.STRING, configPath);
+            });
+
             return Optional.of(item);
         } catch (Exception exception) {
             return Optional.empty();
@@ -99,11 +109,11 @@ public interface ItemFactory {
         return section != null ? buildItem(section, path) : Optional.empty();
     }
 
-    static boolean serializeItem(@NotNull ItemStack item, @NotNull Config config, @NotNull String configPath) {
+    static void serializeItem(@NotNull ItemStack item, @NotNull Config config, @NotNull String configPath) {
         try {
             if (item.getType() == Material.AIR) {
                 LoggerUtils.warn("Trying to serialize null or AIR item at path: " + configPath);
-                return false;
+                return;
             }
 
             LoggerUtils.info("Serializing item at path: " + configPath + ", type: " + item.getType().name());
@@ -141,11 +151,16 @@ public interface ItemFactory {
                 } else config.set(configPath + ".item_flags", new ArrayList<String>());
             }
 
-            return true;
         } catch (Exception exception) {
             LoggerUtils.error("Failed to serialize item at path " + configPath + ": " + exception.getMessage());
-            return false;
         }
+    }
+
+    static String getPathFromItem(@Nullable ItemStack item) {
+        if (item == null || !item.hasItemMeta()) return null;
+        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+        NamespacedKey key = new NamespacedKey(McTreasure.getInstance(), "itemKey");
+        return container.get(key, PersistentDataType.STRING);
     }
 
     ItemFactory setType(@NotNull Material material);

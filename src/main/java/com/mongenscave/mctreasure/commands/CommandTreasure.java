@@ -1,5 +1,7 @@
 package com.mongenscave.mctreasure.commands;
 
+import com.mongenscave.mctreasure.data.MenuController;
+import com.mongenscave.mctreasure.gui.models.main.TreasureOverviewMenu;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Subcommand;

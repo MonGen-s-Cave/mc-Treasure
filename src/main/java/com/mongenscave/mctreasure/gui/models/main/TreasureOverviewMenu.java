@@ -4,6 +4,7 @@ import com.mongenscave.mctreasure.data.MenuController;
 import com.mongenscave.mctreasure.gui.Menu;
 import com.mongenscave.mctreasure.gui.models.TreasurePreviewMenu;
 import com.mongenscave.mctreasure.identifiers.keys.ItemKeys;
+import com.mongenscave.mctreasure.identifiers.keys.MenuKeys;
 import com.mongenscave.mctreasure.manager.TreasureManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import com.mongenscave.mctreasure.processor.MessageProcessor;

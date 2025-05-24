@@ -43,7 +43,9 @@ public enum MessageKeys {
 
     SESSION_LOCATION_START("messages.sessions.location.start"),
 
-    SUCCESS_SAVE("messages.success-save");
+    SUCCESS_SAVE("messages.success-save"),
+
+    COOLDOWN("messages.cooldown");
 
     private static final Config language = McTreasure.getInstance().getLanguage();
     private final String path;
