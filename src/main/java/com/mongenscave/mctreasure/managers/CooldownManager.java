@@ -15,9 +15,7 @@ public class CooldownManager {
     private CooldownManager() {}
 
     public static CooldownManager getInstance() {
-        if (instance == null) {
-            instance = new CooldownManager();
-        }
+        if (instance == null) instance = new CooldownManager();
         return instance;
     }
 
@@ -77,9 +75,5 @@ public class CooldownManager {
 
     public void clearAll() {
         cooldownData.clear();
-    }
-
-    public @NotNull ConcurrentHashMap<String, ConcurrentHashMap<UUID, Long>> getAllCooldownData() {
-        return cooldownData;
     }
 }

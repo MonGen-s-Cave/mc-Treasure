@@ -1,14 +1,37 @@
 package com.mongenscave.mctreasure.commands;
 
+import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.data.MenuController;
 import com.mongenscave.mctreasure.gui.models.main.TreasureOverviewMenu;
+import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
+import com.mongenscave.mctreasure.managers.TreasureManager;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Subcommand;
+import revxrsal.commands.bukkit.annotation.CommandPermission;
 import revxrsal.commands.orphan.OrphanCommand;
 
 public class CommandTreasure implements OrphanCommand {
+    private static final McTreasure plugin = McTreasure.getInstance();
+
+    @Subcommand("reload")
+    @CommandPermission("mctreasure.reload")
+    public void reload(@NotNull CommandSender sender) {
+        TreasureManager.getInstance().saveTreasures();
+
+        plugin.getParticleSystem().reload();
+        plugin.getConfiguration().reload();
+        plugin.getGuis().reload();
+        plugin.getLanguage().reload();
+        plugin.getTreasures().reload();
+
+        TreasureManager.getInstance().loadTreasures();
+        sender.sendMessage(MessageKeys.RELOAD.getMessage());
+    }
+
     @Subcommand("setup")
+    @CommandPermission("mctreasure.setup")
     public void setup(@NotNull Player player) {
         MenuController menuController = MenuController.getMenuUtils(player);
 

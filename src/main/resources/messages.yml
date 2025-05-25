@@ -39,3 +39,5 @@ messages:
   cooldown: "%prefix% &cWait &4{time} before opening again!"
   item-obtained: "%prefix% &aYou found something..."
   inventory-full: "%prefix% &cYour inventory is full!"
+  update-notify: "%prefix% &a&lUPDATE AVAILABLE! &c&lYOUR VERSION&7: &c{your} &8| &e&lLATEST VERSION&7: &e{latest}"
+  reload: "%prefix% &aSuccessfully reloaded!"

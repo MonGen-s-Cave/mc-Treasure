@@ -11,8 +11,11 @@ import com.mongenscave.mctreasure.listener.MenuListener;
 import com.mongenscave.mctreasure.listener.TreasureListener;
 import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.particles.ParticleSystem;
+import com.mongenscave.mctreasure.update.UpdateChecker;
+import com.mongenscave.mctreasure.utils.LoggerUtils;
 import com.mongenscave.mctreasure.utils.RegisterUtils;
 import lombok.Getter;
+import org.bstats.bukkit.Metrics;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.zapper.ZapperJavaPlugin;
@@ -26,6 +29,7 @@ public final class McTreasure extends ZapperJavaPlugin {
     @Getter Config guis;
     @Getter Config treasures;
     @Getter ParticleSystem particleSystem;
+    @Getter UpdateChecker updateChecker;
     Config config;
 
     @Override
@@ -47,12 +51,26 @@ public final class McTreasure extends ZapperJavaPlugin {
 
         TreasureManager.getInstance().loadTreasures();
         RegisterUtils.registerCommands();
+
+        new Metrics(this, 25975);
+        updateChecker = new UpdateChecker(3562623);
+
+        LoggerUtils.info("McTreasure plugin successfully enabled!");
     }
 
     @Override
     public void onDisable() {
-        TreasureManager.getInstance().saveTreasures();
-        particleSystem.shutdown();
+        if (TreasureManager.getInstance() != null) TreasureManager.getInstance().saveTreasures();
+
+        if (particleSystem != null) {
+            particleSystem.shutdown();
+            particleSystem = null;
+        }
+
+        if (updateChecker != null) {
+            updateChecker.shutdown();
+            updateChecker = null;
+        }
     }
 
     public Config getConfiguration() {

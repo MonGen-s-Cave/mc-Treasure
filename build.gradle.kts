@@ -26,6 +26,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
     compileOnly("org.projectlombok:lombok:1.18.36")
     compileOnly("com.github.decentsoftware-eu:decentholograms:2.8.17")
+    compileOnly("org.bstats:bstats-bukkit:3.0.2")
 }
 
 java {
@@ -41,4 +42,5 @@ zapper {
     repositories { includeProjectRepositories() }
 
     relocate("com.artillexstudios.axapi", "axapi")
+    relocate("org.bstats", "metrics")
 }
