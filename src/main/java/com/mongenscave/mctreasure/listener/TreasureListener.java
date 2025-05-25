@@ -1,11 +1,10 @@
 package com.mongenscave.mctreasure.listener;
 
-import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.data.MenuController;
 import com.mongenscave.mctreasure.data.OpenResult;
 import com.mongenscave.mctreasure.gui.models.TreasureInventoryMenu;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
-import com.mongenscave.mctreasure.manager.TreasureManager;
+import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,6 +48,7 @@ public class TreasureListener implements Listener {
         }
 
         OpenResult result = chest.canPlayerOpen(player);
+
         if (!result.canOpen()) {
             player.sendMessage(Objects.requireNonNull(result.message()));
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 0.5f, 1.0f);
@@ -62,9 +62,9 @@ public class TreasureListener implements Listener {
 
         chest.recordPlayerOpen(player);
 
-        if (chest.isHologramEnabled() && chest.getHologramLines().stream().anyMatch(line -> line.contains("{time-left}"))) {
-            chest.setupHologram();
-        }
+        if (chest.isHologramEnabled() && chest.getHologramLines()
+                .stream()
+                .anyMatch(line -> line.contains("{time-left}"))) chest.setupHologram();
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

@@ -7,7 +7,7 @@ import com.mongenscave.mctreasure.identifiers.ParticleTypes;
 import com.mongenscave.mctreasure.identifiers.keys.ItemKeys;
 import com.mongenscave.mctreasure.identifiers.keys.MenuKeys;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
-import com.mongenscave.mctreasure.manager.TreasureManager;
+import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import com.mongenscave.mctreasure.sessions.ChatSessions;
 import com.mongenscave.mctreasure.sessions.LocationSession;

@@ -21,7 +21,10 @@ public enum PlaceholderKeys {
     SIZE_FORMAT("placeholders.size.format"),
 
     PERMISSION_FORMAT("placeholders.permission.format"),
-    PERMISSION_NONE("placeholders.permission.none");
+    PERMISSION_NONE("placeholders.permission.none"),
+
+    HOLOGRAM_TIME_LEFT("placeholders.hologram.time-left"),
+    HOLOGRAM_READY("placeholders.hologram.ready");
 
     private static final Config config = McTreasure.getInstance().getConfiguration();
     private final String path;

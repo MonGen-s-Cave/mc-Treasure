@@ -1,17 +1,14 @@
-package com.mongenscave.mctreasure.manager;
+package com.mongenscave.mctreasure.managers;
 
 import com.artillexstudios.axapi.config.Config;
 import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.block.implementation.Section;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.identifiers.ParticleTypes;
 import com.mongenscave.mctreasure.item.ItemFactory;
+import com.mongenscave.mctreasure.managers.CooldownManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import com.mongenscave.mctreasure.utils.LocationUtils;
 import com.mongenscave.mctreasure.utils.LoggerUtils;
-import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -21,37 +18,21 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("all")
 public class TreasureManager {
     private static final McTreasure plugin = McTreasure.getInstance();
     private static TreasureManager instance;
     private final ConcurrentHashMap<String, TreasureChest> treasureChests;
-    private final Gson gson;
-    @Getter
-    private final ConcurrentHashMap<String, ConcurrentHashMap<UUID, Long>> allPlayerCooldowns = new ConcurrentHashMap<>();
-    private final File cooldownsFile;
 
     private TreasureManager() {
         this.treasureChests = new ConcurrentHashMap<>();
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
-        this.cooldownsFile = new File(plugin.getDataFolder(), "cooldowns.json");
-
         loadTreasures();
-        loadCooldowns();
     }
 
     public static TreasureManager getInstance() {
@@ -77,6 +58,7 @@ public class TreasureManager {
                 .build();
 
         treasureChests.put(id, chest);
+        CooldownManager.getInstance().initializeTreasure(id);
         return chest;
     }
 
@@ -94,6 +76,7 @@ public class TreasureManager {
         if (chest != null) {
             chest.removeHologram();
             chest.removeParticleEffect();
+            CooldownManager.getInstance().removeTreasure(id);
             saveTreasures();
             return true;
         }
@@ -122,6 +105,7 @@ public class TreasureManager {
         });
 
         treasureChests.clear();
+        CooldownManager.getInstance().clearAll();
 
         Section treasuresSection = treasuresConfig.getSection("treasures");
         if (treasuresSection == null) return;
@@ -183,6 +167,7 @@ public class TreasureManager {
                         .build();
 
                 treasureChests.put(id, chest);
+                CooldownManager.getInstance().initializeTreasure(id);
 
                 if (location != null) {
                     if (hologramEnabled) chest.setupHologram();
@@ -261,77 +246,6 @@ public class TreasureManager {
         direction.setY(0.3);
 
         player.setVelocity(direction);
-    }
-
-    public void loadCooldowns() {
-        if (!cooldownsFile.exists()) {
-            saveCooldowns();
-            return;
-        }
-
-        try (FileReader reader = new FileReader(cooldownsFile)) {
-            Type type = new TypeToken<ConcurrentHashMap<String, ConcurrentHashMap<String, Long>>>() {
-            }.getType();
-
-            ConcurrentHashMap<String, ConcurrentHashMap<String, Long>> stringCooldowns = gson.fromJson(reader, type);
-
-            if (stringCooldowns != null) {
-                for (ConcurrentHashMap.Entry<String, ConcurrentHashMap<String, Long>> entry : stringCooldowns.entrySet()) {
-                    String treasureId = entry.getKey();
-                    ConcurrentHashMap<String, Long> playerTimestamps = entry.getValue();
-                    ConcurrentHashMap<UUID, Long> uuidMap = new ConcurrentHashMap<>();
-
-                    for (ConcurrentHashMap.Entry<String, Long> playerEntry : playerTimestamps.entrySet()) {
-                        try {
-                            UUID uuid = UUID.fromString(playerEntry.getKey());
-                            uuidMap.put(uuid, playerEntry.getValue());
-                        } catch (IllegalArgumentException exception) {
-                            LoggerUtils.warn("Invalid UUID in cooldowns.json: " + playerEntry.getKey());
-                        }
-                    }
-
-                    allPlayerCooldowns.put(treasureId, uuidMap);
-
-                    TreasureChest chest = treasureChests.get(treasureId);
-
-                    if (chest != null) {
-                        chest.getPlayerCooldowns().clear();
-                        chest.getPlayerCooldowns().putAll(uuidMap);
-                    }
-                }
-            }
-
-            LoggerUtils.info("Loaded cooldowns for " + allPlayerCooldowns.size() + " treasure chests.");
-        } catch (IOException exception) {
-            LoggerUtils.error("Failed to load cooldowns.json");
-        }
-    }
-
-    public void saveCooldowns() {
-        try {
-            if (!cooldownsFile.exists()) {
-                cooldownsFile.getParentFile().mkdirs();
-                cooldownsFile.createNewFile();
-            }
-
-            ConcurrentHashMap<String, Map<String, Long>> cooldownsToSave = new ConcurrentHashMap<>();
-
-            for (ConcurrentHashMap.Entry<String, TreasureChest> entry : treasureChests.entrySet()) {
-                String id = entry.getKey();
-                TreasureChest chest = entry.getValue();
-
-                Map<String, Long> playerCooldowns = chest.getPlayerCooldowns().entrySet().stream()
-                        .collect(Collectors.toMap(e -> e.getKey().toString(), Map.Entry::getValue));
-
-                cooldownsToSave.put(id, playerCooldowns);
-            }
-
-            try (FileWriter writer = new FileWriter(cooldownsFile)) {
-                gson.toJson(cooldownsToSave, writer);
-            }
-        } catch (IOException exception) {
-            LoggerUtils.error("Failed to save cooldowns.json");
-        }
     }
 
     public @Nullable TreasureChest getChestAtLocation(@NotNull Location location) {

@@ -3,7 +3,7 @@ package com.mongenscave.mctreasure.listener;
 import com.mongenscave.mctreasure.data.MenuController;
 import com.mongenscave.mctreasure.gui.models.main.TreasureEditMenu;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
-import com.mongenscave.mctreasure.manager.TreasureManager;
+import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import com.mongenscave.mctreasure.sessions.LocationSession;
 import org.bukkit.Location;

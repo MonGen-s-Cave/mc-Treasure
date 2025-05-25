@@ -6,7 +6,7 @@ import com.mongenscave.mctreasure.gui.models.main.TreasureEditMenu;
 import com.mongenscave.mctreasure.identifiers.keys.ItemKeys;
 import com.mongenscave.mctreasure.identifiers.keys.MenuKeys;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
-import com.mongenscave.mctreasure.manager.TreasureManager;
+import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import org.bukkit.Material;
 import org.bukkit.Sound;

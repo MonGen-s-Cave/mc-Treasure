@@ -1,6 +1,5 @@
 package com.mongenscave.mctreasure;
 
-import com.artillexstudios.axapi.AxPlugin;
 import com.artillexstudios.axapi.config.Config;
 import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.dumper.DumperSettings;
 import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.general.GeneralSettings;
@@ -10,7 +9,7 @@ import com.artillexstudios.axapi.scheduler.impl.BukkitScheduler;
 import com.mongenscave.mctreasure.listener.LocationSessionListener;
 import com.mongenscave.mctreasure.listener.MenuListener;
 import com.mongenscave.mctreasure.listener.TreasureListener;
-import com.mongenscave.mctreasure.manager.TreasureManager;
+import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.particles.ParticleSystem;
 import com.mongenscave.mctreasure.utils.RegisterUtils;
 import lombok.Getter;
@@ -53,7 +52,6 @@ public final class McTreasure extends ZapperJavaPlugin {
     @Override
     public void onDisable() {
         TreasureManager.getInstance().saveTreasures();
-        TreasureManager.getInstance().saveCooldowns();
         particleSystem.shutdown();
     }
 
