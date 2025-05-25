@@ -1,6 +1,5 @@
 package com.mongenscave.mctreasure.gui.models;
 
-import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.data.MenuController;
 import com.mongenscave.mctreasure.gui.Menu;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
@@ -23,6 +22,7 @@ public class TreasureInventoryMenu extends Menu {
     private final List<ItemStack> availableItems;
     private final ThreadLocalRandom random = ThreadLocalRandom.current();
     private boolean itemsPlaced = false;
+    private boolean cooldownRecorded = false;
 
     public TreasureInventoryMenu(@NotNull MenuController menuController, @NotNull TreasureChest chest) {
         super(menuController);
@@ -47,6 +47,17 @@ public class TreasureInventoryMenu extends Menu {
                 inventory.setItem(event.getSlot(), new ItemStack(Material.AIR));
 
                 player.sendMessage(MessageKeys.ITEM_OBTAINED.getMessage());
+
+                if (!cooldownRecorded) {
+                    chest.recordPlayerOpen(player);
+                    cooldownRecorded = true;
+
+                    if (chest.isHologramEnabled() && chest.getHologramLines()
+                            .stream()
+                            .anyMatch(line -> line.contains("{time-left}"))) {
+                        chest.setupHologram();
+                    }
+                }
             } else {
                 player.sendMessage(MessageKeys.INVENTORY_FULL.getMessage());
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 0.5f, 1.0f);

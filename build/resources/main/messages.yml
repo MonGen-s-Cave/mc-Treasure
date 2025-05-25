@@ -24,7 +24,7 @@ messages:
     pushback:
       input: "%prefix% &aPushback strength set to &2{pushback}"
       failed: "%prefix% &cThe session has expired!"
-      start: "%prefix% &aType the strength, or &ccancel &ato abort the session! &8(&a1.0&7-&a5.0&8)"
+      start: "%prefix% &aType the strength, or &ccancel &ato abort the session! &8(&a0.0&7-&a5.0&8)"
       invalid-strength: "%prefix% &cInvalid strength! It must be between &40.0 &cand &45.0&c!"
       invalid-format: "%prefix% &cInvalid number!"
     hologram:

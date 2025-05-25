@@ -50,21 +50,16 @@ public class TreasureListener implements Listener {
         OpenResult result = chest.canPlayerOpen(player);
 
         if (!result.canOpen()) {
-            player.sendMessage(Objects.requireNonNull(result.message()));
+            if (result.message() != null) player.sendMessage(result.message());
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 0.5f, 1.0f);
 
             if (chest.isPushbackEnabled()) treasureManager.applyPushback(player, chest);
             return;
         }
 
-        new TreasureInventoryMenu(MenuController.getMenuUtils(player), chest).open();
+        TreasureInventoryMenu menu = new TreasureInventoryMenu(MenuController.getMenuUtils(player), chest);
+        menu.open();
         player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.5f, 1.0f);
-
-        chest.recordPlayerOpen(player);
-
-        if (chest.isHologramEnabled() && chest.getHologramLines()
-                .stream()
-                .anyMatch(line -> line.contains("{time-left}"))) chest.setupHologram();
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
