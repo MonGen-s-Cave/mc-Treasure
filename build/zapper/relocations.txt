@@ -1,1 +1,2 @@
 com.artillexstudios.axapi:com.mongenscave.mctreasure.axapi
+org.bstats:com.mongenscave.mctreasure.bstats

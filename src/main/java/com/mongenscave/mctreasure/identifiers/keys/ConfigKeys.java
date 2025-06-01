@@ -1,7 +1,7 @@
 package com.mongenscave.mctreasure.identifiers.keys;
 
-import com.artillexstudios.axapi.config.Config;
 import com.mongenscave.mctreasure.McTreasure;
+import com.mongenscave.mctreasure.config.Config;
 import com.mongenscave.mctreasure.processor.MessageProcessor;
 import org.jetbrains.annotations.NotNull;
 

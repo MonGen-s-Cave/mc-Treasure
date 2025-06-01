@@ -59,7 +59,7 @@ public class UpdateChecker implements Listener {
         if (isUpToDate.get() || latestVersion.get() == null) return;
         if (!player.hasPermission("mctreasure.update")) return;
 
-        plugin.getScheduler().runLaterAsync(() -> player.sendMessage(MessageKeys.UPDATE_NOTIFY.getMessage()
+        plugin.getScheduler().runTaskLaterAsynchronously(() -> player.sendMessage(MessageKeys.UPDATE_NOTIFY.getMessage()
                 .replace("{your}", currentVersion)
                 .replace("{latest}", latestVersion.get())), NOTIFICATION_DELAY_TICKS);
     }
@@ -127,10 +127,10 @@ public class UpdateChecker implements Listener {
     private void startUpdateChecker() {
         long intervalTicks = CHECK_INTERVAL.toSeconds() * 20L;
 
-        plugin.getScheduler().runAsyncTimer(() -> {
+        plugin.getScheduler().runTaskTimerAsynchronously(() -> {
             checkForUpdates().thenAccept(updateAvailable -> {
                 if (updateAvailable) {
-                    plugin.getScheduler().runLaterAsync(() -> Bukkit.getConsoleSender().sendMessage(MessageKeys.UPDATE_NOTIFY.getMessage()
+                    plugin.getScheduler().runTaskLaterAsynchronously(() -> Bukkit.getConsoleSender().sendMessage(MessageKeys.UPDATE_NOTIFY.getMessage()
                             .replace("{your}", currentVersion)
                             .replace("{latest}", latestVersion.get())), NOTIFICATION_DELAY_TICKS);
                 }

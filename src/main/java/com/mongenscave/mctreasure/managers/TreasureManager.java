@@ -1,14 +1,13 @@
 package com.mongenscave.mctreasure.managers;
 
-import com.artillexstudios.axapi.config.Config;
-import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.block.implementation.Section;
 import com.mongenscave.mctreasure.McTreasure;
+import com.mongenscave.mctreasure.config.Config;
 import com.mongenscave.mctreasure.identifiers.ParticleTypes;
 import com.mongenscave.mctreasure.item.ItemFactory;
-import com.mongenscave.mctreasure.managers.CooldownManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import com.mongenscave.mctreasure.utils.LocationUtils;
 import com.mongenscave.mctreasure.utils.LoggerUtils;
+import dev.dejvokep.boostedyaml.block.implementation.Section;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;

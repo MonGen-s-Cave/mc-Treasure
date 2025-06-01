@@ -1,10 +1,10 @@
 package com.mongenscave.mctreasure.item;
 
-import com.artillexstudios.axapi.config.Config;
-import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.block.implementation.Section;
 import com.mongenscave.mctreasure.McTreasure;
+import com.mongenscave.mctreasure.config.Config;
 import com.mongenscave.mctreasure.processor.MessageProcessor;
 import com.mongenscave.mctreasure.utils.LoggerUtils;
+import dev.dejvokep.boostedyaml.block.implementation.Section;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;

@@ -5,26 +5,18 @@ import com.mongenscave.mctreasure.commands.CommandTreasure;
 import com.mongenscave.mctreasure.handler.ErrorHandler;
 import com.mongenscave.mctreasure.identifiers.keys.ConfigKeys;
 import lombok.experimental.UtilityClass;
-import revxrsal.commands.bukkit.BukkitCommandHandler;
+import revxrsal.commands.bukkit.BukkitLamp;
 import revxrsal.commands.orphan.Orphans;
 
-import java.util.Locale;
-
 @UtilityClass
-@SuppressWarnings("deprecation")
 public class RegisterUtils {
     private static final McTreasure plugin = McTreasure.getInstance();
 
     public void registerCommands() {
-        LoggerUtils.info("Registering commands...");
+        var lamp = BukkitLamp.builder(plugin)
+                .exceptionHandler(new ErrorHandler())
+                .build();
 
-        BukkitCommandHandler handler = BukkitCommandHandler.create(plugin);
-
-        handler.getTranslator().add(new ErrorHandler());
-        handler.setLocale(new Locale("en", "US"));
-        handler.register(Orphans.path(ConfigKeys.ALIASES.getList().toArray(String[]::new)).handler(new CommandTreasure()));
-        handler.registerBrigadier();
-
-        LoggerUtils.info("Successfully registered exception handlers...");
+        lamp.register(Orphans.path(ConfigKeys.ALIASES.getList().toArray(String[]::new)).handler(new CommandTreasure()));
     }
 }

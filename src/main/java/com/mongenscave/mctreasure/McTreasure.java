@@ -1,11 +1,8 @@
 package com.mongenscave.mctreasure;
 
-import com.artillexstudios.axapi.config.Config;
-import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.dumper.DumperSettings;
-import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.general.GeneralSettings;
-import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.loader.LoaderSettings;
-import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.updater.UpdaterSettings;
-import com.artillexstudios.axapi.scheduler.impl.BukkitScheduler;
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
+import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
+import com.mongenscave.mctreasure.config.Config;
 import com.mongenscave.mctreasure.listener.LocationSessionListener;
 import com.mongenscave.mctreasure.listener.MenuListener;
 import com.mongenscave.mctreasure.listener.TreasureListener;
@@ -14,6 +11,10 @@ import com.mongenscave.mctreasure.particles.ParticleSystem;
 import com.mongenscave.mctreasure.update.UpdateChecker;
 import com.mongenscave.mctreasure.utils.LoggerUtils;
 import com.mongenscave.mctreasure.utils.RegisterUtils;
+import dev.dejvokep.boostedyaml.settings.dumper.DumperSettings;
+import dev.dejvokep.boostedyaml.settings.general.GeneralSettings;
+import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
+import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.jetbrains.annotations.Contract;
@@ -25,7 +26,7 @@ import java.io.File;
 public final class McTreasure extends ZapperJavaPlugin {
     @Getter static McTreasure instance;
     @Getter Config language;
-    @Getter BukkitScheduler scheduler;
+    @Getter TaskScheduler scheduler;
     @Getter Config guis;
     @Getter Config treasures;
     @Getter ParticleSystem particleSystem;
@@ -35,7 +36,7 @@ public final class McTreasure extends ZapperJavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
-        scheduler = new BukkitScheduler(this);
+        scheduler = UniversalScheduler.getScheduler(this);
     }
 
     @Override
@@ -53,7 +54,7 @@ public final class McTreasure extends ZapperJavaPlugin {
         RegisterUtils.registerCommands();
 
         new Metrics(this, 25975);
-        updateChecker = new UpdateChecker(3562623);
+        //updateChecker = new UpdateChecker(3562623);
 
         LoggerUtils.info("McTreasure plugin successfully enabled!");
     }

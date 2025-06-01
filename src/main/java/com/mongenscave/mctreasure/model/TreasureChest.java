@@ -1,6 +1,6 @@
 package com.mongenscave.mctreasure.model;
 
-import com.artillexstudios.axapi.scheduler.ScheduledTask;
+import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.data.CooldownResult;
 import com.mongenscave.mctreasure.data.OpenResult;
@@ -47,7 +47,7 @@ public class TreasureChest {
     @Getter @Setter private boolean particleEnabled;
     private transient UUID particleEffectId;
     private transient String hologramId;
-    private transient ScheduledTask hologramUpdateTask;
+    private transient MyScheduledTask hologramUpdateTask;
 
     public void setupHologram() {
         if (!hologramEnabled || location == null || hologramLines == null || hologramLines.isEmpty()) {
@@ -134,7 +134,7 @@ public class TreasureChest {
         stopHologramUpdateTask();
 
         if (hasTimeLeftPlaceholder()) {
-            hologramUpdateTask = McTreasure.getInstance().getScheduler().runAsyncTimer(() -> {
+            hologramUpdateTask = McTreasure.getInstance().getScheduler().runTaskTimerAsynchronously(() -> {
                 if (hologramEnabled && hologramId != null) setupHologram();
             }, 20L, 20L);
         }

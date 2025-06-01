@@ -19,14 +19,21 @@ repositories {
 }
 
 dependencies {
-    implementation("com.artillexstudios.axapi:axapi:1.4.557:all")
+    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.12") {
+        exclude(module = "lamp.common")
+        exclude(module = "lamp.brigadier")
+    }
 
+    zap("io.github.revxrsal:lamp.common:4.0.0-rc.12")
+    zap("io.github.revxrsal:lamp.brigadier:4.0.0-rc.12")
     zap("com.github.User-19fff:EasierChatSetup:7485c3412c")
+    zap("org.bstats:bstats-bukkit:3.0.2")
+    zap("com.github.Anon8281:UniversalScheduler:0.1.6")
+    zap("dev.dejvokep:boosted-yaml:1.3.6")
 
     compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
     compileOnly("org.projectlombok:lombok:1.18.36")
     compileOnly("com.github.decentsoftware-eu:decentholograms:2.8.17")
-    compileOnly("org.bstats:bstats-bukkit:3.0.2")
 }
 
 java {
@@ -42,5 +49,5 @@ zapper {
     repositories { includeProjectRepositories() }
 
     relocate("com.artillexstudios.axapi", "axapi")
-    relocate("org.bstats", "metrics")
+    relocate("org.bstats", "bstats")
 }

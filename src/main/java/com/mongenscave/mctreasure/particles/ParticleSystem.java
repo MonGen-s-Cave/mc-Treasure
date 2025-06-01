@@ -1,6 +1,6 @@
 package com.mongenscave.mctreasure.particles;
 
-import com.artillexstudios.axapi.scheduler.ScheduledTask;
+import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.data.ParticleEffectConfiguration;
 import com.mongenscave.mctreasure.identifiers.ParticleTypes;
@@ -27,7 +27,7 @@ public class ParticleSystem {
     @Getter private final ConcurrentHashMap<ParticleTypes, ParticleEffect> registeredEffects;
     private final ConcurrentHashMap<UUID, ParticleEffect> activeEffects;
     private boolean isRunning;
-    private ScheduledTask taskRunner;
+    private MyScheduledTask taskRunner;
 
     public ParticleSystem() {
         this.registeredEffects = new ConcurrentHashMap<>();
@@ -103,7 +103,7 @@ public class ParticleSystem {
     private void start() {
         if (isRunning) return;
 
-        taskRunner = plugin.getScheduler().runTimer(this::tick, 0L, 1L);
+        taskRunner = plugin.getScheduler().runTaskTimer(this::tick, 0L, 1L);
         isRunning = true;
     }
 

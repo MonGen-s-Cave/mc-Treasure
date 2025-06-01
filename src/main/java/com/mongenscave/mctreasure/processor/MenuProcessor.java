@@ -1,6 +1,6 @@
 package com.mongenscave.mctreasure.processor;
 
-import com.artillexstudios.axapi.scheduler.ScheduledTask;
+import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.gui.Menu;
 import org.bukkit.inventory.Inventory;
@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class MenuProcessor {
     private final Menu menu;
-    private ScheduledTask task;
+    private MyScheduledTask task;
 
     public MenuProcessor(@NotNull Menu menu) {
         this.menu = menu;
@@ -17,7 +17,7 @@ public class MenuProcessor {
     public void start(int intervalTicks) {
         if (isRunning()) return;
 
-        task = McTreasure.getInstance().getScheduler().runTimer(this::updateMenu, intervalTicks, intervalTicks);
+        task = McTreasure.getInstance().getScheduler().runTaskTimer(this::updateMenu, intervalTicks, intervalTicks);
     }
 
     public void stop() {
