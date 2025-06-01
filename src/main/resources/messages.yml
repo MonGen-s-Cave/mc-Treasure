@@ -1,4 +1,4 @@
-prefix: "&8[&6&lTREASURE&8] &8»"
+prefix: "&6[Treasure]"
 
 messages:
   sessions:
@@ -39,5 +39,5 @@ messages:
   cooldown: "%prefix% &cWait &4{time} before opening again!"
   item-obtained: "%prefix% &aYou found something..."
   inventory-full: "%prefix% &cYour inventory is full!"
-  update-notify: "%prefix% &a&lUPDATE AVAILABLE! &c&lYOUR VERSION&7: &c{your} &8| &e&lLATEST VERSION&7: &e{latest}"
+  update-notify: "%prefix% &aA new update for the plugin is now available! &8(&c{your} &f→ &e{latest}&8)"
   reload: "%prefix% &aSuccessfully reloaded!"

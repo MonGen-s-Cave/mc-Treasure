@@ -36,6 +36,10 @@ dependencies {
     compileOnly("com.github.decentsoftware-eu:decentholograms:2.8.17")
 }
 
+tasks.withType<JavaCompile> {
+    options.compilerArgs.add("-parameters")
+}
+
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
@@ -48,6 +52,7 @@ zapper {
 
     repositories { includeProjectRepositories() }
 
-    relocate("com.artillexstudios.axapi", "axapi")
     relocate("org.bstats", "bstats")
+    relocate("com.github.Anon8281.universalScheduler", "universalScheduler")
+    relocate("dev.dejvokep.boostedyaml", "boostedyaml")
 }
