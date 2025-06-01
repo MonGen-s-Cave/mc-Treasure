@@ -54,7 +54,7 @@ public final class McTreasure extends ZapperJavaPlugin {
         RegisterUtils.registerCommands();
 
         new Metrics(this, 25975);
-        //updateChecker = new UpdateChecker(3562623);
+        updateChecker = new UpdateChecker(7857);
 
         LoggerUtils.info("McTreasure plugin successfully enabled!");
     }
