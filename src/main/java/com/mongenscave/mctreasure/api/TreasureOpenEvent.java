@@ -1,6 +1,6 @@
 package com.mongenscave.mctreasure.api;
 
-import com.mongenscave.mctreasure.model.TreasureChest;
+import com.mongenscave.mctreasure.api.model.ITreasureChest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -15,9 +15,9 @@ public class TreasureOpenEvent extends Event implements Cancellable {
     private boolean cancelled = false;
 
     private final Player player;
-    private final TreasureChest treasure;
+    private final ITreasureChest treasure;
 
-    public TreasureOpenEvent(@NotNull Player player, @NotNull TreasureChest treasure) {
+    public TreasureOpenEvent(@NotNull Player player, @NotNull ITreasureChest treasure) {
         this.player = player;
         this.treasure = treasure;
     }
@@ -28,7 +28,7 @@ public class TreasureOpenEvent extends Event implements Cancellable {
     }
 
     @NotNull
-    public TreasureChest getTreasure() {
+    public ITreasureChest getTreasure() {
         return treasure;
     }
 

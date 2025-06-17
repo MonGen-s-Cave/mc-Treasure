@@ -1,7 +1,7 @@
 package com.mongenscave.mctreasure.api;
 
+import com.mongenscave.mctreasure.api.model.ITreasureChest;
 import com.mongenscave.mctreasure.managers.TreasureManager;
-import com.mongenscave.mctreasure.model.TreasureChest;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +20,7 @@ public class McTreasureAPI {
      * @return The treasure chest or null if not found
      */
     @Nullable
-    public static TreasureChest getTreasure(@NotNull String id) {
+    public static ITreasureChest getTreasure(@NotNull String id) {
         return TreasureManager.getInstance().getTreasure(id);
     }
 
@@ -29,8 +29,11 @@ public class McTreasureAPI {
      * @return List of all treasure chests
      */
     @NotNull
-    public static List<TreasureChest> getAllTreasures() {
-        return TreasureManager.getInstance().getAllTreasures();
+    public static List<ITreasureChest> getAllTreasures() {
+        return TreasureManager.getInstance().getAllTreasures()
+                .stream()
+                .map(treasure -> (ITreasureChest) treasure)
+                .toList();
     }
 
     /**
@@ -39,7 +42,7 @@ public class McTreasureAPI {
      * @return The created treasure chest
      */
     @NotNull
-    public static TreasureChest createTreasure(@NotNull String id) {
+    public static ITreasureChest createTreasure(@NotNull String id) {
         return TreasureManager.getInstance().createTreasure(id);
     }
 
@@ -58,7 +61,7 @@ public class McTreasureAPI {
      * @return The treasure chest at location or null
      */
     @Nullable
-    public static TreasureChest getTreasureAtLocation(@NotNull Location location) {
+    public static ITreasureChest getTreasureAtLocation(@NotNull Location location) {
         return TreasureManager.getInstance().getChestAtLocation(location);
     }
 
@@ -68,7 +71,7 @@ public class McTreasureAPI {
      * @param treasure The treasure chest
      * @return true if player can open
      */
-    public static boolean canPlayerOpen(@NotNull Player player, @NotNull TreasureChest treasure) {
+    public static boolean canPlayerOpen(@NotNull Player player, @NotNull ITreasureChest treasure) {
         return treasure.canPlayerOpen(player).canOpen();
     }
 }

@@ -1,6 +1,6 @@
 package com.mongenscave.mctreasure.api;
 
-import com.mongenscave.mctreasure.model.TreasureChest;
+import com.mongenscave.mctreasure.api.model.ITreasureChest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -16,10 +16,10 @@ public class TreasureCloseEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
 
     private final Player player;
-    private final TreasureChest treasure;
+    private final ITreasureChest treasure;
     private final List<ItemStack> itemsTaken;
 
-    public TreasureCloseEvent(@NotNull Player player, @NotNull TreasureChest treasure, @NotNull List<ItemStack> itemsTaken) {
+    public TreasureCloseEvent(@NotNull Player player, @NotNull ITreasureChest treasure, @NotNull List<ItemStack> itemsTaken) {
         this.player = player;
         this.treasure = treasure;
         this.itemsTaken = List.copyOf(itemsTaken);
@@ -31,7 +31,7 @@ public class TreasureCloseEvent extends Event {
     }
 
     @NotNull
-    public TreasureChest getTreasure() {
+    public ITreasureChest getTreasure() {
         return treasure;
     }
 
