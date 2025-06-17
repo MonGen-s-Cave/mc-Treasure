@@ -4,5 +4,4 @@ com.github.User-19fff:EasierChatSetup:7485c3412c
 org.bstats:bstats-bukkit:3.0.2
 com.github.Anon8281:UniversalScheduler:0.1.6
 dev.dejvokep:boosted-yaml:1.3.6
-com.mongenscave:mc-TimesAPI:1.0.0
 org.bstats:bstats-base:3.0.2
