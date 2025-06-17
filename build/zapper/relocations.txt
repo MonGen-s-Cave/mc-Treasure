@@ -1,2 +1,3 @@
-com.artillexstudios.axapi:com.mongenscave.mctreasure.axapi
 org.bstats:com.mongenscave.mctreasure.bstats
+com.github.Anon8281.universalScheduler:com.mongenscave.mctreasure.universalScheduler
+dev.dejvokep.boostedyaml:com.mongenscave.mctreasure.boostedyaml

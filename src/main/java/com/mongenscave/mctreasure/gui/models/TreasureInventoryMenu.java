@@ -1,10 +1,12 @@
 package com.mongenscave.mctreasure.gui.models;
 
+import com.mongenscave.mctreasure.api.TreasureCloseEvent;
 import com.mongenscave.mctreasure.data.MenuController;
 import com.mongenscave.mctreasure.gui.Menu;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import com.mongenscave.mctreasure.processor.MessageProcessor;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -20,6 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class TreasureInventoryMenu extends Menu {
     private final TreasureChest chest;
     private final List<ItemStack> availableItems;
+    private final List<ItemStack> itemsTaken = Collections.synchronizedList(new ArrayList<>());
     private final ThreadLocalRandom random = ThreadLocalRandom.current();
     private boolean itemsPlaced = false;
     private boolean cooldownRecorded = false;
@@ -42,9 +45,12 @@ public class TreasureInventoryMenu extends Menu {
 
         if (event.getClick().isLeftClick() || event.getClick().isRightClick()) {
             if (hasAvailableSlot(player)) {
-                player.getInventory().addItem(clickedItem.clone());
+                ItemStack takenItem = clickedItem.clone();
+                player.getInventory().addItem(takenItem);
                 player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 0.5f, 1.2f);
                 inventory.setItem(event.getSlot(), new ItemStack(Material.AIR));
+
+                itemsTaken.add(takenItem);
 
                 player.sendMessage(MessageKeys.ITEM_OBTAINED.getMessage());
 
@@ -122,6 +128,9 @@ public class TreasureInventoryMenu extends Menu {
 
         Player player = menuController.owner();
         player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 0.5f, 1.0f);
+
+        TreasureCloseEvent closeEvent = new TreasureCloseEvent(player, chest, itemsTaken);
+        Bukkit.getPluginManager().callEvent(closeEvent);
     }
 
     @Override

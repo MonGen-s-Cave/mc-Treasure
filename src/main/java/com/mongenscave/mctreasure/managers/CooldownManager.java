@@ -1,6 +1,6 @@
 package com.mongenscave.mctreasure.managers;
 
-import com.mongenscave.mctreasure.data.CooldownResult;
+import com.mongenscave.mctreasure.api.data.CooldownResult;
 import com.mongenscave.mctreasure.utils.TimeUtils;
 import org.jetbrains.annotations.NotNull;
 

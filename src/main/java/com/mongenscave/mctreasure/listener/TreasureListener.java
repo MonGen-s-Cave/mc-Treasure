@@ -1,11 +1,13 @@
 package com.mongenscave.mctreasure.listener;
 
+import com.mongenscave.mctreasure.api.TreasureOpenEvent;
 import com.mongenscave.mctreasure.data.MenuController;
-import com.mongenscave.mctreasure.data.OpenResult;
+import com.mongenscave.mctreasure.api.data.OpenResult;
 import com.mongenscave.mctreasure.gui.models.TreasureInventoryMenu;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -18,8 +20,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 public class TreasureListener implements Listener {
     private final TreasureManager treasureManager = TreasureManager.getInstance();
@@ -56,6 +56,11 @@ public class TreasureListener implements Listener {
             if (chest.isPushbackEnabled()) treasureManager.applyPushback(player, chest);
             return;
         }
+
+        TreasureOpenEvent openEvent = new TreasureOpenEvent(player, chest);
+        Bukkit.getPluginManager().callEvent(openEvent);
+
+        if (openEvent.isCancelled()) return;
 
         TreasureInventoryMenu menu = new TreasureInventoryMenu(MenuController.getMenuUtils(player), chest);
         menu.open();

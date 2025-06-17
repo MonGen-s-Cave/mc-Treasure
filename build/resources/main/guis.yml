@@ -11,7 +11,7 @@ overview-menu:
         - " &8&l| &7You can create new"
         - " &8&l| &7treasures here!"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴄʀᴇᴀᴛᴇ ɴᴇᴡ"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴄʀᴇᴀᴛᴇ ɴᴇᴡ"
         - ""
     treasure-item:
       material: "BARREL"
@@ -25,10 +25,11 @@ overview-menu:
         - " &8&l| &7Size &8» {size-status}"
         - " &8&l| &7Permission &8» {permission-status}"
         - " &8&l| &7Particle &8» {particle-status} &8(&6{particle-details}&8)"
+        - " &8&l| &7Schedule &8» {schedule-status}"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
-        - "&7ʀɪɢʜᴛ ᴄʟɪᴄᴋ &8» &fᴘʀᴇᴠɪᴇᴡ ʟᴏᴏᴛ"
-        - "&7ǫ ᴋᴇʏ &8» &fᴅᴇʟᴇᴛᴇ"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
+        - " &8&l| &7ʀɪɢʜᴛ ᴄʟɪᴄᴋ &8» &fᴘʀᴇᴠɪᴇᴡ ʟᴏᴏᴛ"
+        - " &8&l| &7ǫ ᴋᴇʏ &8» &fᴅᴇʟᴇᴛᴇ"
         - ""
 
 edit-menu:
@@ -46,7 +47,7 @@ edit-menu:
         - ""
         - " &8&l| &7Current: {name-status}"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
         - ""
     edit-permission:
       slot: 12
@@ -59,7 +60,7 @@ edit-menu:
         - ""
         - " &8&l| &7Current: {permission-status}"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
         - ""
     edit-particle:
       slot: 18
@@ -72,8 +73,8 @@ edit-menu:
         - ""
         - " &8&l| &7Current: {particle-status}"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
-        - "&7ǫ ᴋᴇʏ &8» &fᴛᴏɢɢʟᴇ"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
+        - " &8&l| &7ǫ ᴋᴇʏ &8» &fᴛᴏɢɢʟᴇ"
         - ""
     edit-cooldown:
       slot: 14
@@ -86,7 +87,7 @@ edit-menu:
         - ""
         - " &8&l| &7Current: {cooldown-status}"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
         - ""
     edit-size:
       slot: 16
@@ -99,7 +100,7 @@ edit-menu:
         - ""
         - " &8&l| &7Current: {size-status}"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
         - ""
     edit-location:
       slot: 29
@@ -112,7 +113,7 @@ edit-menu:
         - ""
         - " &8&l| &7Current: {location-status}"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
         - ""
     edit-pushback:
       slot: 31
@@ -126,8 +127,8 @@ edit-menu:
         - " &8&l| &7Current: {pushback-status}"
         - " &8&l| &7Current: {pushback-value}"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
-        - "&7ǫ ᴋᴇʏ &8» &fᴛᴏɢɢʟᴇ"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
+        - " &8&l| &7ǫ ᴋᴇʏ &8» &fᴛᴏɢɢʟᴇ"
         - ""
     edit-hologram:
       slot: 33
@@ -140,8 +141,8 @@ edit-menu:
         - ""
         - " &8&l| &7Current: {hologram-status}"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
-        - "&7ǫ ᴋᴇʏ &8» &fᴛᴏɢɢʟᴇ"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
+        - " &8&l| &7ǫ ᴋᴇʏ &8» &fᴛᴏɢɢʟᴇ"
         - ""
     edit-items:
       slot: 22
@@ -152,7 +153,7 @@ edit-menu:
         - " &8&l| &7Set the items for"
         - " &8&l| &7the treasure!"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
         - ""
     save-item:
       slot: 49
@@ -162,7 +163,7 @@ edit-menu:
         - ""
         - " &8&l| &7Saves the changes"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fꜱᴀᴠᴇ"
+        - " &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fꜱᴀᴠᴇ"
         - ""
 
 preview-menu:
@@ -180,7 +181,7 @@ add-item-menu:
         - ""
         - " &8&l| &7Saves the changes"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fꜱᴀᴠᴇ"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fꜱᴀᴠᴇ"
         - ""
 
 edit-hologram-menu:
@@ -195,7 +196,7 @@ edit-hologram-menu:
         - ""
         - " &8&l| &7Saves the changes"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fꜱᴀᴠᴇ"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fꜱᴀᴠᴇ"
         - ""
     create-line-item:
       slot: 52
@@ -206,7 +207,7 @@ edit-hologram-menu:
         - " &8&l| &7Create a new line!"
         - " &8&l| &7Use &6%blank% &7for a blank line!"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fɴᴇᴡ ʟɪɴᴇ"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fɴᴇᴡ ʟɪɴᴇ"
         - ""
     increase-height-item:
       slot: 51
@@ -219,22 +220,22 @@ edit-hologram-menu:
         - ""
         - " &8&l| &7Current: &a{height-status}"
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &a+ &a0.1"
-        - "&7ʀɪɢʜᴛ ᴄʟɪᴄᴋ &8» &c- &a0.1"
+        - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &a+ &a0.1"
+        - " &8&l| &7ʀɪɢʜᴛ ᴄʟɪᴄᴋ &8» &c- &a0.1"
         - ""
     line-item:
       material: "SUGAR"
       name: "{content}"
       lore:
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ ʟɪɴᴇ"
-        - "&7ǫ ᴋᴇʏ &8» &fʀᴇᴍᴏᴠᴇ ʟɪɴᴇ"
+        - "  &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ ʟɪɴᴇ"
+        - "  &8&l| &7ǫ ᴋᴇʏ &8» &fʀᴇᴍᴏᴠᴇ ʟɪɴᴇ"
         - ""
     blank-item:
       material: "BARRIER"
       name: "&8[&7&lBLANK&8]"
       lore:
         - ""
-        - "&7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ ʟɪɴᴇ"
-        - "&7ǫ ᴋᴇʏ &8» &fʀᴇᴍᴏᴠᴇ ʟɪɴᴇ"
+        - "  &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ ʟɪɴᴇ"
+        - "  &8&l| &7ǫ ᴋᴇʏ &8» &fʀᴇᴍᴏᴠᴇ ʟɪɴᴇ"
         - ""

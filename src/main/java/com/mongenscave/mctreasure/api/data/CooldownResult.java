@@ -1,4 +1,4 @@
-package com.mongenscave.mctreasure.data;
+package com.mongenscave.mctreasure.api.data;
 
 import org.jetbrains.annotations.Nullable;
 

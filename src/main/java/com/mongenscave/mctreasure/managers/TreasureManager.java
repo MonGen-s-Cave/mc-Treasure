@@ -131,6 +131,10 @@ public class TreasureManager {
                 String particleTypeName = chestSection.getString("particle.type", "HELIX");
                 ParticleTypes particleType;
 
+                boolean scheduleEnabled = chestSection.getBoolean("schedule.enabled", false);
+                String scheduleExpression = chestSection.getString("schedule.expression", null);
+                boolean currentlyAvailable = chestSection.getBoolean("scheduke.currently-available", true);
+
                 try {
                     particleType = ParticleTypes.valueOf(particleTypeName.toUpperCase());
                 } catch (IllegalArgumentException exception) {

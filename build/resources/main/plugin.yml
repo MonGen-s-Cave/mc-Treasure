@@ -1,6 +1,7 @@
 name: mc-Treasure
-version: '1.0.0'
+version: '1.0.1'
 main: com.mongenscave.mctreasure.McTreasure
 api-version: '1.18'
 authors: [coma112]
 softdepend: [DecentHolograms]
+folia-supported: true

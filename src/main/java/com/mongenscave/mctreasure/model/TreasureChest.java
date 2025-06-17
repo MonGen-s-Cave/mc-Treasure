@@ -2,11 +2,13 @@ package com.mongenscave.mctreasure.model;
 
 import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import com.mongenscave.mctreasure.McTreasure;
-import com.mongenscave.mctreasure.data.CooldownResult;
-import com.mongenscave.mctreasure.data.OpenResult;
+import com.mongenscave.mctreasure.api.model.ITreasureChest;
+import com.mongenscave.mctreasure.api.data.CooldownResult;
+import com.mongenscave.mctreasure.api.data.OpenResult;
 import com.mongenscave.mctreasure.data.ParticleEffectConfiguration;
 import com.mongenscave.mctreasure.identifiers.ParticleTypes;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
+import com.mongenscave.mctreasure.identifiers.keys.PlaceholderKeys;
 import com.mongenscave.mctreasure.managers.CooldownManager;
 import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.particles.ParticleSystem;
@@ -29,7 +31,7 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class TreasureChest {
+public class TreasureChest implements ITreasureChest {
     @Getter private final String id;
     @Setter @Getter private String name;
     @Setter @Getter private Location location;
@@ -45,6 +47,7 @@ public class TreasureChest {
     @Getter @Setter private ParticleTypes particleType;
     @Getter @Setter private Particle particleDisplay;
     @Getter @Setter private boolean particleEnabled;
+
     private transient UUID particleEffectId;
     private transient String hologramId;
     private transient MyScheduledTask hologramUpdateTask;
@@ -97,19 +100,12 @@ public class TreasureChest {
         }
     }
 
-    public void refreshParticleEffect() {
-        removeParticleEffect();
-
-        if (particleEnabled) setupParticleEffect();
-    }
-
     public @NotNull OpenResult canPlayerOpen(@NotNull Player player) {
         CooldownResult result = CooldownManager.getInstance()
                 .checkCooldown(id, player.getUniqueId(), cooldownMillis);
 
-        if (result.canOpen()) {
-            return new OpenResult(true, null);
-        } else {
+        if (result.canOpen()) return new OpenResult(true, null);
+        else {
             String message = null;
 
             if (result.formattedTime() != null) message = MessageKeys.COOLDOWN.getMessage().replace("{time}", result.formattedTime());
@@ -119,11 +115,6 @@ public class TreasureChest {
 
     public void recordPlayerOpen(@NotNull Player player) {
         CooldownManager.getInstance().recordOpen(id, player.getUniqueId());
-    }
-
-    public void cleanup() {
-        removeHologram();
-        removeParticleEffect();
     }
 
     private boolean hasTimeLeftPlaceholder() {
@@ -173,22 +164,15 @@ public class TreasureChest {
     }
 
     private String getTimeLeftDisplay() {
-        if (cooldownMillis <= 0) {
-            return McTreasure.getInstance().getConfiguration()
-                    .getString("placeholders.hologram.ready", "&a&lREADY TO OPEN&7!");
-        }
+        if (cooldownMillis <= 0) return PlaceholderKeys.HOLOGRAM_READY.getString();
 
         long remainingTime = CooldownManager.getInstance()
                 .getShortestRemainingCooldown(id, cooldownMillis);
 
-        if (remainingTime <= 0) {
-            return McTreasure.getInstance().getConfiguration()
-                    .getString("placeholders.hologram.ready", "&a&lREADY TO OPEN&7!");
-        }
+        if (remainingTime <= 0) return PlaceholderKeys.HOLOGRAM_READY.getString();
 
         String formattedTime = TimeUtils.formatTime(remainingTime);
-        String timeLeftFormat = McTreasure.getInstance().getConfiguration()
-                .getString("placeholders.hologram.time-left", "&c%s");
+        String timeLeftFormat = PlaceholderKeys.HOLOGRAM_TIME_LEFT.getString();
 
         return String.format(timeLeftFormat, formattedTime);
     }
