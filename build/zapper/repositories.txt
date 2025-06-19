@@ -1,7 +1,0 @@
-https://repo.mongenscave.com/
-https://repo.maven.apache.org/maven2/
-https://repo.papermc.io/repository/maven-public/
-https://oss.sonatype.org/content/groups/public/
-https://jitpack.io
-https://repo.artillex-studios.com/releases
-https://nexus.hc.to/content/repositories/pub_releases

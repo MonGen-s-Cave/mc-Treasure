@@ -1,7 +1,0 @@
-io.github.revxrsal:lamp.brigadier:4.0.0-rc.12
-io.github.revxrsal:lamp.common:4.0.0-rc.12
-com.github.User-19fff:EasierChatSetup:7485c3412c
-org.bstats:bstats-bukkit:3.0.2
-com.github.Anon8281:UniversalScheduler:0.1.6
-dev.dejvokep:boosted-yaml:1.3.6
-org.bstats:bstats-base:3.0.2

@@ -1,11 +1,13 @@
 package com.mongenscave.mctreasure.sessions;
 
+import com.mongenscave.mcchatsetup.McChatSetup;
 import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.gui.models.main.TreasureEditMenu;
 import com.mongenscave.mctreasure.gui.models.main.TreasureHologramMenu;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.model.TreasureChest;
-import net.coma112.easierchatsetup.EasierChatSetup;
+import com.mongenscave.mctreasure.model.TreasureChest;
+//import net.coma112.easierchatsetup.McChatSetup;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +19,7 @@ public class ChatSessions {
     private static final McTreasure plugin = McTreasure.getInstance();
 
     public static void setPermission(@NotNull Player player, @NotNull TreasureChest chest, @NotNull TreasureEditMenu menu) {
-        EasierChatSetup setup = new EasierChatSetup(plugin);
+        McChatSetup setup = new McChatSetup(plugin);
 
         setup.setTime(15)
                 .onInput(input -> {
@@ -34,7 +36,7 @@ public class ChatSessions {
     }
 
     public static void setName(@NotNull Player player, @NotNull TreasureChest chest, @NotNull TreasureEditMenu menu) {
-        EasierChatSetup setup = new EasierChatSetup(plugin);
+        McChatSetup setup = new McChatSetup(plugin);
 
         setup.setTime(15)
                 .onInput(input -> {
@@ -51,7 +53,7 @@ public class ChatSessions {
     }
 
     public static void setCooldown(@NotNull Player player, @NotNull TreasureChest chest, @NotNull TreasureEditMenu menu) {
-        EasierChatSetup setup = new EasierChatSetup(plugin);
+        McChatSetup setup = new McChatSetup(plugin);
 
         setup.setTime(15)
                 .onInput(input -> {
@@ -75,7 +77,7 @@ public class ChatSessions {
     }
 
     public static void setSize(@NotNull Player player, @NotNull TreasureChest chest, @NotNull TreasureEditMenu menu) {
-        EasierChatSetup setup = new EasierChatSetup(plugin);
+        McChatSetup setup = new McChatSetup(plugin);
 
         setup.setTime(15)
                 .onInput(input -> {
@@ -104,7 +106,7 @@ public class ChatSessions {
     }
 
     public static void setPushbackStrength(@NotNull Player player, @NotNull TreasureChest chest, @NotNull TreasureEditMenu menu) {
-        EasierChatSetup setup = new EasierChatSetup(plugin);
+        McChatSetup setup = new McChatSetup(plugin);
 
         setup.setTime(15)
                 .onInput(input -> {
@@ -134,7 +136,7 @@ public class ChatSessions {
     }
 
     public static void editHologramLine(@NotNull Player player, int lineIndex, @NotNull TreasureHologramMenu menu) {
-        EasierChatSetup setup = new EasierChatSetup(plugin);
+        McChatSetup setup = new McChatSetup(plugin);
 
         setup.setTime(30)
                 .onInput(input -> {
