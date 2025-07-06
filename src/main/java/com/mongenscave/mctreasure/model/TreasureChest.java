@@ -118,7 +118,8 @@ public class TreasureChest implements ITreasureChest {
     }
 
     private boolean hasTimeLeftPlaceholder() {
-        return hologramLines.stream().anyMatch(line -> line.contains("{time-left}"));
+        String placeholderPattern = "%mctreasure_time_left_" + id + "%";
+        return hologramLines.stream().anyMatch(line -> line.contains(placeholderPattern));
     }
 
     private void startHologramUpdateTask() {
@@ -153,27 +154,21 @@ public class TreasureChest implements ITreasureChest {
 
         for (String line : hologramLines) {
             if (line.equals("%blank%")) processedLines.add("");
-            else {
-                String processedLine = line;
-                if (processedLine.contains("{time-left}")) processedLine = processedLine.replace("{time-left}", getTimeLeftDisplay());
-                processedLines.add(processedLine);
-            }
+            else processedLines.add(line);
         }
 
         return processedLines;
     }
 
-    private String getTimeLeftDisplay() {
+    public String getTimeLeftDisplay(@NotNull Player player) {
         if (cooldownMillis <= 0) return PlaceholderKeys.HOLOGRAM_READY.getString();
 
-        long remainingTime = CooldownManager.getInstance()
-                .getShortestRemainingCooldown(id, cooldownMillis);
+        CooldownResult result = CooldownManager.getInstance()
+                .checkCooldown(id, player.getUniqueId(), cooldownMillis);
 
-        if (remainingTime <= 0) return PlaceholderKeys.HOLOGRAM_READY.getString();
+        if (result.canOpen()) return PlaceholderKeys.HOLOGRAM_READY.getString();
 
-        String formattedTime = TimeUtils.formatTime(remainingTime);
         String timeLeftFormat = PlaceholderKeys.HOLOGRAM_TIME_LEFT.getString();
-
-        return String.format(timeLeftFormat, formattedTime);
+        return String.format(timeLeftFormat, result.formattedTime());
     }
 }

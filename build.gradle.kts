@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.mongenscave"
-version = "1.0.2"
+version = "1.0.4"
 
 repositories {
     maven {
@@ -27,6 +27,7 @@ repositories {
     maven("https://repo.artillex-studios.com/releases")
     maven("https://nexus.hc.to/content/repositories/pub_releases")
     maven("https://repo.mongenscave.com/releases")
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 }
 
 dependencies {
@@ -45,6 +46,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
     compileOnly("org.projectlombok:lombok:1.18.36")
     compileOnly("com.github.decentsoftware-eu:decentholograms:2.8.17")
+    compileOnly("me.clip:placeholderapi:2.11.6")
 }
 
 tasks.withType<JavaCompile> {

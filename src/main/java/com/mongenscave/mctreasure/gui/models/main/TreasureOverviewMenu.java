@@ -45,7 +45,7 @@ public class TreasureOverviewMenu extends Menu {
 
         if (event.getSlot() == ItemKeys.OVERVIEW_CREATE_TREASURE.getSlot()) {
             if (event.getClick() == ClickType.LEFT) {
-                String id = "treasure_" + UUID.randomUUID().toString().substring(0, 8);
+                String id = UUID.randomUUID().toString().substring(0, 8);
                 TreasureChest treasure = treasureManager.createTreasure(id);
                 treasureManager.saveTreasures();
 

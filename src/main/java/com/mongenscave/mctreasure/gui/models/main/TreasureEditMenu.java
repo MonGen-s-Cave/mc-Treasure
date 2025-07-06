@@ -112,9 +112,7 @@ public class TreasureEditMenu extends Menu {
                     case LEFT -> {
                         ParticleTypes currentType = chest.getParticleType();
 
-                        if (currentType == null) chest.setParticleType(ParticleTypes.HEART);
-                        else chest.setParticleType(currentType.next());
-
+                        chest.setParticleType(currentType.next());
                         chest.setParticleDisplay(TreasureManager.getInstance().getParticleFromConfig(chest.getParticleType()));
 
                         if (chest.isParticleEnabled()) chest.setupParticleEffect();
@@ -126,9 +124,7 @@ public class TreasureEditMenu extends Menu {
                     case RIGHT -> {
                         ParticleTypes currentType = chest.getParticleType();
 
-                        if (currentType == null) chest.setParticleType(ParticleTypes.TORNADO);
-                        else chest.setParticleType(currentType.previous());
-
+                        chest.setParticleType(currentType.previous());
                         chest.setParticleDisplay(TreasureManager.getInstance().getParticleFromConfig(chest.getParticleType()));
                         if (chest.isParticleEnabled()) chest.setupParticleEffect();
 
@@ -140,7 +136,6 @@ public class TreasureEditMenu extends Menu {
                         chest.setParticleEnabled(!chest.isParticleEnabled());
 
                         if (chest.isParticleEnabled()) {
-                            if (chest.getParticleType() == null) chest.setParticleType(ParticleTypes.HEART);
                             chest.setParticleDisplay(TreasureManager.getInstance().getParticleFromConfig(chest.getParticleType()));
                             chest.setupParticleEffect();
                         } else chest.removeParticleEffect();

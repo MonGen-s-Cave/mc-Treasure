@@ -39,3 +39,5 @@ effect-particles:
   tornado: "BUBBLE"
   pulsar: "WITCH"
   sphere: "END_ROD"
+  spiral: "END_ROD"
+  phoenix: "END_ROD"

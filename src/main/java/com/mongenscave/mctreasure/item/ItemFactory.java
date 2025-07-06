@@ -116,8 +116,6 @@ public interface ItemFactory {
                 return;
             }
 
-            LoggerUtils.info("Serializing item at path: " + configPath + ", type: " + item.getType().name());
-
             config.set(configPath, null);
             config.set(configPath + ".material", item.getType().name());
             config.set(configPath + ".amount", item.getAmount());
@@ -133,6 +131,7 @@ public interface ItemFactory {
                 config.set(configPath + ".unbreakable", meta.isUnbreakable());
 
                 List<String> enchantments = new ArrayList<>();
+
                 for (Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
                     Enchantment enchantment = entry.getKey();
                     NamespacedKey key = enchantment.getKey();
@@ -154,13 +153,6 @@ public interface ItemFactory {
         } catch (Exception exception) {
             LoggerUtils.error("Failed to serialize item at path " + configPath + ": " + exception.getMessage());
         }
-    }
-
-    static String getPathFromItem(@Nullable ItemStack item) {
-        if (item == null || !item.hasItemMeta()) return null;
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-        NamespacedKey key = new NamespacedKey(McTreasure.getInstance(), "mcTreasure");
-        return container.get(key, PersistentDataType.STRING);
     }
 
     ItemFactory setType(@NotNull Material material);

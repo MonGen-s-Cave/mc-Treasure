@@ -6,7 +6,9 @@ public enum ParticleTypes {
     HELIX,
     PULSAR,
     SPHERE,
-    TORNADO;
+    TORNADO,
+    PHOENIX,
+    SPIRAL;
 
     public ParticleTypes next() {
         ParticleTypes[] values = ParticleTypes.values();

@@ -3,12 +3,14 @@ package com.mongenscave.mctreasure;
 import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 import com.mongenscave.mctreasure.config.Config;
+import com.mongenscave.mctreasure.hooks.plugins.PlaceholderAPI;
 import com.mongenscave.mctreasure.listener.LocationSessionListener;
 import com.mongenscave.mctreasure.listener.MenuListener;
 import com.mongenscave.mctreasure.listener.TreasureListener;
 import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.particles.ParticleSystem;
 import com.mongenscave.mctreasure.update.UpdateChecker;
+import com.mongenscave.mctreasure.utils.LoggerUtils;
 import com.mongenscave.mctreasure.utils.RegisterUtils;
 import dev.dejvokep.boostedyaml.settings.dumper.DumperSettings;
 import dev.dejvokep.boostedyaml.settings.general.GeneralSettings;
@@ -54,6 +56,9 @@ public final class McTreasure extends ZapperJavaPlugin {
 
         new Metrics(this, 25975);
         updateChecker = new UpdateChecker(7857);
+        PlaceholderAPI.registerHook();
+
+        LoggerUtils.printStartup();
     }
 
     @Override

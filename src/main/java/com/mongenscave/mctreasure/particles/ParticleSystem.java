@@ -7,8 +7,10 @@ import com.mongenscave.mctreasure.identifiers.ParticleTypes;
 import com.mongenscave.mctreasure.interfaces.ParticleEffect;
 import com.mongenscave.mctreasure.particles.models.Heart;
 import com.mongenscave.mctreasure.particles.models.Helix;
+import com.mongenscave.mctreasure.particles.models.Phoenix;
 import com.mongenscave.mctreasure.particles.models.Pulsar;
 import com.mongenscave.mctreasure.particles.models.Sphere;
+import com.mongenscave.mctreasure.particles.models.Spiral;
 import com.mongenscave.mctreasure.particles.models.Tornado;
 import com.mongenscave.mctreasure.utils.LoggerUtils;
 import lombok.Getter;
@@ -157,6 +159,8 @@ public class ParticleSystem {
         registerEffect(ParticleTypes.PULSAR, new Pulsar());
         registerEffect(ParticleTypes.TORNADO, new Tornado());
         registerEffect(ParticleTypes.SPHERE, new Sphere());
+        registerEffect(ParticleTypes.SPIRAL, new Spiral());
+        registerEffect(ParticleTypes.PHOENIX, new Phoenix());
 
         LoggerUtils.info("Registered " + registeredEffects.size() + " particle effects.");
     }

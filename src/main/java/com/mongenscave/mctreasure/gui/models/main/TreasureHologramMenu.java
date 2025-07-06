@@ -50,39 +50,6 @@ public class TreasureHologramMenu extends Menu {
         if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
         event.setCancelled(true);
 
-        ItemKeys clickedItemKey = slotToItemKeyMap.get(event.getSlot());
-        if (clickedItemKey == null) return;
-
-        switch (clickedItemKey) {
-            case HOLOGRAM_SAVE -> {
-                saveHologramChanges();
-                player.sendMessage(MessageKeys.SUCCESS_SAVE.getMessage());
-                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5f, 1.0f);
-                new TreasureEditMenu(MenuController.getMenuUtils(player), chest).open();
-                return;
-            }
-
-            case HOLOGRAM_CREATE_LINE -> {
-                hologramLines.add("%blank%");
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.0f);
-                updateHologramInRealTime();
-
-                open();
-                return;
-            }
-
-            case HOLOGRAM_HEIGHT_ITEM -> {
-                switch (event.getClick()) {
-                    case LEFT -> hologramHeight += 0.1;
-                    case RIGHT -> hologramHeight -= 0.1;
-                }
-
-                updateHologramInRealTime();
-                open();
-                return;
-            }
-        }
-
         if (slot < hologramLines.size()) {
             switch (event.getClick()) {
                 case LEFT -> {
@@ -96,6 +63,36 @@ public class TreasureHologramMenu extends Menu {
                     player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5f, 1.0f);
                     open();
                 }
+            }
+        }
+
+        ItemKeys clickedItemKey = slotToItemKeyMap.get(event.getSlot());
+        if (clickedItemKey == null) return;
+
+        switch (clickedItemKey) {
+            case HOLOGRAM_SAVE -> {
+                saveHologramChanges();
+                player.sendMessage(MessageKeys.SUCCESS_SAVE.getMessage());
+                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5f, 1.0f);
+                new TreasureEditMenu(MenuController.getMenuUtils(player), chest).open();
+            }
+
+            case HOLOGRAM_CREATE_LINE -> {
+                hologramLines.add("%blank%");
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.0f);
+                updateHologramInRealTime();
+
+                open();
+            }
+
+            case HOLOGRAM_HEIGHT_ITEM -> {
+                switch (event.getClick()) {
+                    case LEFT -> hologramHeight += 0.1;
+                    case RIGHT -> hologramHeight -= 0.1;
+                }
+
+                updateHologramInRealTime();
+                open();
             }
         }
     }

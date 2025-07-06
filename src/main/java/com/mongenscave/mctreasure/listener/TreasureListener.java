@@ -39,7 +39,7 @@ public class TreasureListener implements Listener {
 
         event.setCancelled(true);
 
-        if (chest.getPermission() != null && !chest.getPermission().isEmpty() && !player.hasPermission(chest.getPermission())) {
+        if (!chest.getPermission().isEmpty() && !player.hasPermission(chest.getPermission())) {
             player.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 0.5f, 1.0f);
 

@@ -46,7 +46,7 @@ public class TreasureManager {
                 .pushbackEnabled(true)
                 .pushbackStrength(1.0)
                 .hologramEnabled(false)
-                .hologramLines(Collections.synchronizedList(new ArrayList<>(List.of("&6&lTreasure Chest", "{time-left}"))))
+                .hologramLines(Collections.synchronizedList(new ArrayList<>(List.of("&6&lTreasure Chest", "%mctreasure_time_left_" + id + "%"))))
                 .cooldownMillis(0)
                 .permission("")
                 .size(27)
