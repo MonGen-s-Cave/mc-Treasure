@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class FancyHologramProvider implements HologramProvider {
     private static final McTreasure plugin = McTreasure.getInstance();
@@ -30,7 +31,7 @@ public class FancyHologramProvider implements HologramProvider {
 
     public FancyHologramProvider() {
         this.hologramManager = FancyHologramsPlugin.get().getHologramManager();
-        this.managedHolograms = Collections.synchronizedSet(new HashSet<>());
+        this.managedHolograms = ConcurrentHashMap.newKeySet();
 
         this.billboard = parseBillboard(plugin.getConfiguration().getString("hook.fancy-holograms.billboard"));
         this.backgroundColor = parseTextColor(plugin.getConfiguration().getString("hook.fancy-holograms.background"));
@@ -39,14 +40,18 @@ public class FancyHologramProvider implements HologramProvider {
 
     @Override
     public void createHologram(@NotNull String id, @NotNull Location location, List<String> lines) {
-        if (hologramExists(id)) removeHologram(id);
+        if (hologramExists(id)) {
+            removeHologram(id);
+        }
 
         try {
             TextHologramData hologramData = new TextHologramData(id, location);
 
             hologramData.setBillboard(billboard);
 
-            if (backgroundColor != null) hologramData.setBackground(backgroundColor);
+            if (backgroundColor != null) {
+                hologramData.setBackground(backgroundColor);
+            }
 
             hologramData.setText(lines);
             hologramData.setPersistent(false);
@@ -57,7 +62,7 @@ public class FancyHologramProvider implements HologramProvider {
 
             managedHolograms.add(id);
         } catch (Exception exception) {
-            LoggerUtils.error(exception.getMessage());
+            LoggerUtils.error("Failed to create FancyHologram '" + id + "': " + exception.getMessage());
         }
     }
 
@@ -73,23 +78,26 @@ public class FancyHologramProvider implements HologramProvider {
                 managedHolograms.remove(id);
             }
         } catch (Exception exception) {
-            LoggerUtils.error(exception.getMessage());
+            LoggerUtils.error("Failed to remove FancyHologram '" + id + "': " + exception.getMessage());
         }
     }
 
     @Override
     public void updateHologram(@NotNull String id, List<String> lines) {
-        if (hologramExists(id)) {
-            try {
-                Optional<Hologram> hologram = hologramManager.getHologram(id);
+        if (!hologramExists(id)) {
+            LoggerUtils.warn("Attempted to update non-existent FancyHologram: " + id);
+            return;
+        }
 
-                if (hologram.isPresent() && hologram.get().getData() instanceof TextHologramData data) {
-                    data.setText(lines);
-                    hologram.get().forceUpdate();
-                }
-            } catch (Exception exception) {
-                LoggerUtils.error(exception.getMessage());
+        try {
+            Optional<Hologram> hologram = hologramManager.getHologram(id);
+
+            if (hologram.isPresent() && hologram.get().getData() instanceof TextHologramData data) {
+                data.setText(lines);
+                hologram.get().forceUpdate();
             }
+        } catch (Exception exception) {
+            LoggerUtils.error("Failed to update FancyHologram '" + id + "': " + exception.getMessage());
         }
     }
 
@@ -100,25 +108,33 @@ public class FancyHologramProvider implements HologramProvider {
 
     @Override
     public void shutdown() {
-        for (String id : Collections.synchronizedSet(new HashSet<>(managedHolograms))) {
+        LoggerUtils.info("Shutting down FancyHologramProvider, removing " + managedHolograms.size() + " holograms...");
+
+        Set<String> hologramsToRemove = Collections.synchronizedSet(new HashSet<>(managedHolograms));
+
+        for (String id : hologramsToRemove) {
             removeHologram(id);
         }
 
         managedHolograms.clear();
+        LoggerUtils.info("FancyHologramProvider shutdown complete.");
     }
 
     private Display.Billboard parseBillboard(@NotNull String text) {
+        if (text.isEmpty()) return Display.Billboard.FIXED;
+
         try {
             return Display.Billboard.valueOf(text.toUpperCase());
         } catch (IllegalArgumentException exception) {
-            LoggerUtils.error(exception.getMessage());
+            LoggerUtils.warn("Invalid billboard type: " + text + ", using FIXED as default");
             return Display.Billboard.FIXED;
         }
     }
 
     @Nullable
     private Color parseTextColor(@NotNull String text) {
-        if (text.equals("TRANSPARENT")) return Color.fromARGB(0);
+        if (text.isEmpty()) return null;
+        if ("TRANSPARENT".equalsIgnoreCase(text)) return Color.fromARGB(0);
 
         try {
             String[] rgb = text.split(";");
@@ -128,10 +144,10 @@ public class FancyHologramProvider implements HologramProvider {
                 int g = Integer.parseInt(rgb[1].trim());
                 int b = Integer.parseInt(rgb[2].trim());
 
-                return Color.fromRGB(r, g, b);
+                if (r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) return Color.fromRGB(r, g, b);
             }
         } catch (NumberFormatException exception) {
-            LoggerUtils.error(exception.getMessage());
+            LoggerUtils.warn("Invalid color format: " + text);
         }
 
         return null;

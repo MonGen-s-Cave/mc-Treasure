@@ -6,6 +6,8 @@ import com.mongenscave.mctreasure.managers.hologram.impl.DecentHologramProvider;
 import com.mongenscave.mctreasure.managers.hologram.impl.FancyHologramProvider;
 import com.mongenscave.mctreasure.utils.LoggerUtils;
 import com.mongenscave.mctreasure.utils.RegisterUtils;
+import eu.decentsoftware.holograms.api.DHAPI;
+import de.oliver.fancyholograms.api.FancyHologramsPlugin;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +17,7 @@ import java.util.List;
 public class HologramManager {
     private static HologramManager instance;
     @Getter private HologramProvider hologramProvider;
-    private static final McTreasure plugin =  McTreasure.getInstance();
+    private static final McTreasure plugin = McTreasure.getInstance();
 
     private HologramManager() {
         initializeHologramProvider();
@@ -44,7 +46,53 @@ public class HologramManager {
     }
 
     public void shutdown() {
-        if (hologramProvider != null) hologramProvider.shutdown();
+        if (hologramProvider != null) {
+            hologramProvider.shutdown();
+            hologramProvider = null;
+        }
+    }
+
+    public void reload() {
+        shutdown();
+        cleanupAllHolograms();
+        initializeHologramProvider();
+
+        LoggerUtils.info("HologramManager reloaded successfully!");
+    }
+
+    public static void resetInstance() {
+        if (instance != null) {
+            instance.shutdown();
+            instance = null;
+        }
+    }
+
+    private void cleanupAllHolograms() {
+        LoggerUtils.info("Cleaning up all MCTreasure holograms from all providers...");
+
+        if (RegisterUtils.isPluginEnabled("DecentHolograms")) {
+            try {
+                for (var treasure : TreasureManager.getInstance().getAllTreasures()) {
+                    String hologramId = "treasure-" + treasure.getId();
+                    if (DHAPI.getHologram(hologramId) != null) DHAPI.removeHologram(hologramId);
+                }
+            } catch (Exception exception) {
+                LoggerUtils.error("Error cleaning up DecentHolograms: " + exception.getMessage());
+            }
+        }
+
+        if (RegisterUtils.isPluginEnabled("FancyHolograms")) {
+            try {
+                var hologramManager = FancyHologramsPlugin.get().getHologramManager();
+                for (var treasure : TreasureManager.getInstance().getAllTreasures()) {
+                    String hologramId = "treasure-" + treasure.getId();
+                    var hologram = hologramManager.getHologram(hologramId);
+                    hologram.ifPresent(hologramManager::removeHologram);
+                }
+            } catch (Exception exception) {
+                LoggerUtils.error("Error cleaning up FancyHolograms: " + exception.getMessage());
+            }
+        }
     }
 
     private void initializeHologramProvider() {
@@ -61,7 +109,7 @@ public class HologramManager {
 
             initializeDecentHolograms();
         } catch (Exception exception) {
-            LoggerUtils.error(exception.getMessage());
+            LoggerUtils.error("Error initializing hologram provider: " + exception.getMessage());
         }
     }
 
@@ -69,6 +117,9 @@ public class HologramManager {
         if (RegisterUtils.isPluginEnabled("DecentHolograms")) {
             this.hologramProvider = new DecentHologramProvider();
             LoggerUtils.info("Using DecentHolograms!");
-        } else LoggerUtils.info("No hologram plugin found! Please install DecentHolograms or FancyHolograms!");
+        } else {
+            LoggerUtils.warn("No hologram plugin found! Please install DecentHolograms or FancyHolograms!");
+            this.hologramProvider = null;
+        }
     }
 }

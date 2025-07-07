@@ -4,7 +4,9 @@ import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.data.MenuController;
 import com.mongenscave.mctreasure.gui.models.main.TreasureOverviewMenu;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
+import com.mongenscave.mctreasure.managers.HologramManager;
 import com.mongenscave.mctreasure.managers.TreasureManager;
+import com.mongenscave.mctreasure.model.TreasureChest;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -20,13 +22,23 @@ public class CommandTreasure implements OrphanCommand {
     public void reload(@NotNull CommandSender sender) {
         TreasureManager.getInstance().saveTreasures();
 
+        for (TreasureChest treasure : TreasureManager.getInstance().getAllTreasures()) {
+            treasure.removeHologram();
+            treasure.removeParticleEffect();
+        }
+
+        HologramManager.resetInstance();
+
         plugin.getParticleSystem().reload();
         plugin.getConfiguration().reload();
         plugin.getGuis().reload();
         plugin.getLanguage().reload();
         plugin.getTreasures().reload();
 
+        HologramManager.getInstance().reload();
         TreasureManager.getInstance().loadTreasures();
+        TreasureManager.getInstance().setupAllHolograms();
+
         sender.sendMessage(MessageKeys.RELOAD.getMessage());
     }
 
@@ -34,7 +46,6 @@ public class CommandTreasure implements OrphanCommand {
     @CommandPermission("mctreasure.setup")
     public void setup(@NotNull Player player) {
         MenuController menuController = MenuController.getMenuUtils(player);
-
         new TreasureOverviewMenu(menuController).open();
     }
 }

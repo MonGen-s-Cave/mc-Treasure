@@ -238,6 +238,21 @@ public class TreasureManager {
         }
     }
 
+    public void setupAllHolograms() {
+        for (TreasureChest chest : getAllTreasures()) {
+            if (chest.getLocation() != null) {
+                chest.removeHologram();
+
+                if (chest.isHologramEnabled()) chest.setupHologram();
+
+                if (chest.isParticleEnabled()) {
+                    chest.removeParticleEffect();
+                    chest.setupParticleEffect();
+                }
+            }
+        }
+    }
+
     public void applyPushback(@NotNull Player player, @NotNull TreasureChest chest) {
         if (!chest.isPushbackEnabled() || chest.getLocation() == null) return;
 

@@ -117,6 +117,18 @@ public class TreasureChest implements ITreasureChest {
         CooldownManager.getInstance().recordOpen(id, player.getUniqueId());
     }
 
+    public String getTimeLeftDisplay(@NotNull Player player) {
+        if (cooldownMillis <= 0) return PlaceholderKeys.HOLOGRAM_READY.getString();
+
+        CooldownResult result = CooldownManager.getInstance()
+                .checkCooldown(id, player.getUniqueId(), cooldownMillis);
+
+        if (result.canOpen()) return PlaceholderKeys.HOLOGRAM_READY.getString();
+
+        String timeLeftFormat = PlaceholderKeys.HOLOGRAM_TIME_LEFT.getString();
+        return String.format(timeLeftFormat, result.formattedTime());
+    }
+
     private boolean hasTimeLeftPlaceholder() {
         String placeholderPattern = "%mctreasure_time_left_" + id + "%";
         return hologramLines.stream().anyMatch(line -> line.contains(placeholderPattern));
@@ -161,17 +173,5 @@ public class TreasureChest implements ITreasureChest {
         }
 
         return processedLines;
-    }
-
-    public String getTimeLeftDisplay(@NotNull Player player) {
-        if (cooldownMillis <= 0) return PlaceholderKeys.HOLOGRAM_READY.getString();
-
-        CooldownResult result = CooldownManager.getInstance()
-                .checkCooldown(id, player.getUniqueId(), cooldownMillis);
-
-        if (result.canOpen()) return PlaceholderKeys.HOLOGRAM_READY.getString();
-
-        String timeLeftFormat = PlaceholderKeys.HOLOGRAM_TIME_LEFT.getString();
-        return String.format(timeLeftFormat, result.formattedTime());
     }
 }
