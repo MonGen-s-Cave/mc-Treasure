@@ -10,10 +10,9 @@ import com.mongenscave.mctreasure.identifiers.ParticleTypes;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.identifiers.keys.PlaceholderKeys;
 import com.mongenscave.mctreasure.managers.CooldownManager;
+import com.mongenscave.mctreasure.managers.HologramManager;
 import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.particles.ParticleSystem;
-import com.mongenscave.mctreasure.utils.TimeUtils;
-import eu.decentsoftware.holograms.api.DHAPI;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -60,19 +59,20 @@ public class TreasureChest implements ITreasureChest {
 
         Location holoLoc = location.clone().add(0.5, 1.5 + hologramHeight, 0.5);
 
-        if (hologramId != null) DHAPI.removeHologram(hologramId);
+        hologramId = "treasure-" + id;
+
+        if (HologramManager.getInstance().hologramExists(hologramId)) HologramManager.getInstance().removeHologram(hologramId);
 
         List<String> processedLines = processHologramLines();
 
-        hologramId = "treasure-" + id;
-        DHAPI.createHologram(hologramId, holoLoc, processedLines);
+        HologramManager.getInstance().createHologram(hologramId, holoLoc, processedLines);
 
         if (hasTimeLeftPlaceholder()) startHologramUpdateTask();
     }
 
     public void removeHologram() {
         if (hologramId != null) {
-            DHAPI.removeHologram(hologramId);
+            HologramManager.getInstance().removeHologram(hologramId);
             hologramId = null;
         }
 
@@ -127,7 +127,10 @@ public class TreasureChest implements ITreasureChest {
 
         if (hasTimeLeftPlaceholder()) {
             hologramUpdateTask = McTreasure.getInstance().getScheduler().runTaskTimerAsynchronously(() -> {
-                if (hologramEnabled && hologramId != null) setupHologram();
+                if (hologramEnabled && hologramId != null) {
+                    List<String> processedLines = processHologramLines();
+                    HologramManager.getInstance().updateHologram(hologramId, processedLines);
+                }
             }, 20L, 20L);
         }
     }

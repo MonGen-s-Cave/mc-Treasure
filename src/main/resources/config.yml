@@ -3,6 +3,13 @@ aliases:
   - "treasure"
   - "treasurechest"
 
+hook:
+  hologram-type: "DecentHolograms" # DecentHolograms OR FancyHolograms
+  fancy-holograms:
+    billboard: "FIXED"
+    background: "100;255;79" # R;G;B to use transparent type -> "TRANSPARENT"
+    shadow: true
+
 placeholders:
   status:
     enabled: "&a☑"

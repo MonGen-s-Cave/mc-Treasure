@@ -1,4 +1,4 @@
-package com.mongenscave.mctreasure.interfaces;
+package com.mongenscave.mctreasure.particles.models;
 
 import com.mongenscave.mctreasure.data.ParticleEffectConfiguration;
 

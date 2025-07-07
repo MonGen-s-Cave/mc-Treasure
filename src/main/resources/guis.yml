@@ -25,7 +25,6 @@ overview-menu:
         - " &8&l| &7Size &8» {size-status}"
         - " &8&l| &7Permission &8» {permission-status}"
         - " &8&l| &7Particle &8» {particle-status} &8(&6{particle-details}&8)"
-        - " &8&l| &7Schedule &8» {schedule-status}"
         - ""
         - " &8&l| &7ʟᴇꜰᴛ ᴄʟɪᴄᴋ &8» &fᴇᴅɪᴛ"
         - " &8&l| &7ʀɪɢʜᴛ ᴄʟɪᴄᴋ &8» &fᴘʀᴇᴠɪᴇᴡ ʟᴏᴏᴛ"

@@ -1,7 +1,7 @@
 package com.mongenscave.mctreasure.particles;
 
 import com.mongenscave.mctreasure.data.ParticleEffectConfiguration;
-import com.mongenscave.mctreasure.interfaces.ParticleEffect;
+import com.mongenscave.mctreasure.particles.models.ParticleEffect;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Color;

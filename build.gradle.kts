@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.mongenscave"
-version = "1.0.4"
+version = "1.0.5"
 
 repositories {
     maven {
@@ -28,6 +28,7 @@ repositories {
     maven("https://nexus.hc.to/content/repositories/pub_releases")
     maven("https://repo.mongenscave.com/releases")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://repo.fancyinnovations.com/releases")
 }
 
 dependencies {
@@ -47,6 +48,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.36")
     compileOnly("com.github.decentsoftware-eu:decentholograms:2.8.17")
     compileOnly("me.clip:placeholderapi:2.11.6")
+    compileOnly("de.oliver:FancyHolograms:2.6.0")
 }
 
 tasks.withType<JavaCompile> {
