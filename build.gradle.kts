@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.mongenscave"
-version = "1.0.5"
+version = "1.0.6"
 
 repositories {
     maven {
@@ -42,7 +42,7 @@ dependencies {
     zap("org.bstats:bstats-bukkit:3.0.2")
     zap("com.github.Anon8281:UniversalScheduler:0.1.6")
     zap("dev.dejvokep:boosted-yaml:1.3.6")
-    zap("com.mongenscave:mc-ChatSetup:1.0.3")
+    implementation("com.mongenscave:mc-ChatSetup:1.0.3")
 
     compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
     compileOnly("org.projectlombok:lombok:1.18.36")
