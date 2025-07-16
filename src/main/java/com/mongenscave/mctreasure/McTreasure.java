@@ -11,6 +11,7 @@ import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.particles.ParticleSystem;
 import com.mongenscave.mctreasure.update.UpdateChecker;
 import com.mongenscave.mctreasure.utils.LoggerUtils;
+import com.mongenscave.mctreasure.utils.PlayerUtils;
 import com.mongenscave.mctreasure.utils.RegisterUtils;
 import dev.dejvokep.boostedyaml.settings.dumper.DumperSettings;
 import dev.dejvokep.boostedyaml.settings.general.GeneralSettings;
@@ -74,6 +75,8 @@ public final class McTreasure extends ZapperJavaPlugin {
             updateChecker.shutdown();
             updateChecker = null;
         }
+
+        PlayerUtils.cleanup();
     }
 
     public Config getConfiguration() {

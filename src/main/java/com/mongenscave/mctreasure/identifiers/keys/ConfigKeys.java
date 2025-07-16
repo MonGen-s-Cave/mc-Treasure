@@ -8,7 +8,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public enum ConfigKeys {
-    ALIASES("aliases");
+    ALIASES("aliases"),
+
+    TOAST_ENABLED("toast.enabled"),
+    TOAST_MESSAGE("toast.message"),
+    TOAST_MATERIAL("toast.material");
 
     private static final Config config = McTreasure.getInstance().getConfiguration();
     private final String path;

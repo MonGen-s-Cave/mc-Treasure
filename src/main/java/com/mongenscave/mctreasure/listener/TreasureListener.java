@@ -4,9 +4,11 @@ import com.mongenscave.mctreasure.api.TreasureOpenEvent;
 import com.mongenscave.mctreasure.data.MenuController;
 import com.mongenscave.mctreasure.api.data.OpenResult;
 import com.mongenscave.mctreasure.gui.models.TreasureInventoryMenu;
+import com.mongenscave.mctreasure.identifiers.keys.ConfigKeys;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
+import com.mongenscave.mctreasure.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -65,6 +67,7 @@ public class TreasureListener implements Listener {
         TreasureInventoryMenu menu = new TreasureInventoryMenu(MenuController.getMenuUtils(player), chest);
         menu.open();
         player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.5f, 1.0f);
+        if (ConfigKeys.TOAST_ENABLED.getBoolean()) PlayerUtils.sendToast(player, ConfigKeys.TOAST_MESSAGE.getString(), "", Material.valueOf(ConfigKeys.TOAST_MATERIAL.getString()));
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

@@ -3,6 +3,11 @@ aliases:
   - "treasure"
   - "treasurechest"
 
+toast:
+  enabled: true
+  message: "&#E2287B&lFOUND A TREASURE"
+  material: "CHEST"
+
 hook:
   hologram-type: "DecentHolograms" # DecentHolograms OR FancyHolograms
   fancy-holograms:
