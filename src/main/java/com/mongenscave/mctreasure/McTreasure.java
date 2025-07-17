@@ -55,7 +55,10 @@ public final class McTreasure extends ZapperJavaPlugin {
 
         particleSystem = new ParticleSystem();
 
-        TreasureManager.getInstance().loadTreasures();
+        TreasureManager treasureManager = TreasureManager.getInstance();
+
+        if (treasureManager != null) treasureManager.initialize();
+
         RegisterUtils.registerCommands();
 
         new Metrics(this, 25975);

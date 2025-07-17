@@ -22,21 +22,47 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @SuppressWarnings("all")
 public class TreasureManager {
     private static final McTreasure plugin = McTreasure.getInstance();
     private static TreasureManager instance;
+    private static final AtomicBoolean isInitializing = new AtomicBoolean(false);
     private final ConcurrentHashMap<String, TreasureChest> treasureChests;
+    private final AtomicBoolean isLoaded = new AtomicBoolean(false);
 
     private TreasureManager() {
         this.treasureChests = new ConcurrentHashMap<>();
-        loadTreasures();
     }
 
+    @Nullable
     public static TreasureManager getInstance() {
-        if (instance == null) instance = new TreasureManager();
+        if (instance == null) {
+            synchronized (TreasureManager.class) {
+                if (instance == null) {
+                    if (isInitializing.get()) {
+                        LoggerUtils.warn("Circular initialization detected in TreasureManager - returning null to break cycle");
+                        return null;
+                    }
+
+                    isInitializing.set(true);
+                    try {
+                        instance = new TreasureManager();
+                    } finally {
+                        isInitializing.set(false);
+                    }
+                }
+            }
+        }
         return instance;
+    }
+
+    public void initialize() {
+        if (!isLoaded.get()) {
+            loadTreasures();
+            isLoaded.set(true);
+        }
     }
 
     public TreasureChest createTreasure(@NotNull String id) {
@@ -96,6 +122,11 @@ public class TreasureManager {
     }
 
     public void loadTreasures() {
+        if (isInitializing.get()) {
+            LoggerUtils.warn("Attempted to load treasures during initialization - deferring to prevent circular dependency");
+            return;
+        }
+
         Config treasuresConfig = plugin.getTreasures();
 
         treasureChests.values().forEach(chest -> {
