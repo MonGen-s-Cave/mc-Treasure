@@ -51,7 +51,10 @@ public enum MessageKeys {
     INVENTORY_FULL("messages.inventory-full"),
 
     UPDATE_NOTIFY("messages.update-notify"),
-    RELOAD("messages.reload");
+    RELOAD("messages.reload"),
+
+    TRACKER_GAVE("messages.tracker-gave"),
+    TRACKER_GET("messages.tracker-get");
 
     private static final Config language = McTreasure.getInstance().getLanguage();
     private final String path;

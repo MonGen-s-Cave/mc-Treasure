@@ -15,6 +15,22 @@ hook:
     background: "100;255;79" # R;G;B to use transparent type -> "TRANSPARENT"
     shadow: true
 
+treasure-tracker:
+  enabled: true
+  item:
+    name: "&#E2287B&lTREASURE TRACKER"
+    material: "COMPASS"
+    lore:
+      - ""
+      - " &8&l| See where is a treasure!"
+      - ""
+  directions:
+    forward: "▲"
+    backward: "▼"
+    left: "◀"
+    right: "▶"
+  message: "&#E2287B{distance}&7m &8&l| &#E2287B{direction}" # This will appear on their actionbar
+
 placeholders:
   status:
     enabled: "&a☑"

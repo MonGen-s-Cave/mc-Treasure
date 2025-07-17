@@ -3,6 +3,7 @@ package com.mongenscave.mctreasure.commands;
 import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.data.MenuController;
 import com.mongenscave.mctreasure.gui.models.main.TreasureOverviewMenu;
+import com.mongenscave.mctreasure.identifiers.keys.ConfigKeys;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.managers.HologramManager;
 import com.mongenscave.mctreasure.managers.TreasureManager;
@@ -40,6 +41,14 @@ public class CommandTreasure implements OrphanCommand {
         TreasureManager.getInstance().setupAllHolograms();
 
         sender.sendMessage(MessageKeys.RELOAD.getMessage());
+    }
+
+    @Subcommand("give tracker")
+    @CommandPermission("mctreasure.tracker")
+    public void give(@NotNull CommandSender sender, @NotNull Player target) {
+        target.getInventory().addItem(ConfigKeys.TRACKER_ITEM.getItem());
+        target.sendMessage(MessageKeys.TRACKER_GET.getMessage());
+        sender.sendMessage(MessageKeys.TRACKER_GAVE.getMessage().replace("{player}", target.getName()));
     }
 
     @Subcommand("setup")

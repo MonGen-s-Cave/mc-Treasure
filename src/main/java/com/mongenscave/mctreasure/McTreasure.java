@@ -6,8 +6,10 @@ import com.mongenscave.mctreasure.config.Config;
 import com.mongenscave.mctreasure.hooks.plugins.PlaceholderAPI;
 import com.mongenscave.mctreasure.listener.LocationSessionListener;
 import com.mongenscave.mctreasure.listener.MenuListener;
+import com.mongenscave.mctreasure.listener.TrackerListener;
 import com.mongenscave.mctreasure.listener.TreasureListener;
 import com.mongenscave.mctreasure.managers.TreasureManager;
+import com.mongenscave.mctreasure.managers.TreasureTracker;
 import com.mongenscave.mctreasure.particles.ParticleSystem;
 import com.mongenscave.mctreasure.update.UpdateChecker;
 import com.mongenscave.mctreasure.utils.LoggerUtils;
@@ -49,6 +51,7 @@ public final class McTreasure extends ZapperJavaPlugin {
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
         getServer().getPluginManager().registerEvents(new TreasureListener(), this);
         getServer().getPluginManager().registerEvents(new LocationSessionListener(), this);
+        getServer().getPluginManager().registerEvents(new TrackerListener(), this);
 
         particleSystem = new ParticleSystem();
 
@@ -77,6 +80,7 @@ public final class McTreasure extends ZapperJavaPlugin {
         }
 
         PlayerUtils.cleanup();
+        TreasureTracker.getInstance().stopAllTracking();
     }
 
     public Config getConfiguration() {

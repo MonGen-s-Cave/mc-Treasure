@@ -41,3 +41,5 @@ messages:
   inventory-full: "%prefix% &cYour inventory is full!"
   update-notify: "%prefix% &aA new update for the plugin is now available! &8(&c{your} &f→ &e{latest}&8)"
   reload: "%prefix% &aSuccessfully reloaded!"
+  tracker-gave: "%prefix% &aYou have successfully gave &2{target} a tracker!"
+  tracker-get: "%prefix% &8[&a&l+&8] &aTreasure Tracker"
