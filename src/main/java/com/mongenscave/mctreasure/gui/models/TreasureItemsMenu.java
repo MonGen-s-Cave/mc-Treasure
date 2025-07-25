@@ -28,11 +28,6 @@ public class TreasureItemsMenu extends Menu {
         super(menuController);
         this.chest = chest;
         this.items = chest.getItems();
-
-        if (this.items == null) {
-            this.items = Collections.synchronizedList(new ArrayList<>());
-            chest.setItems(this.items);
-        }
     }
 
     @Override
@@ -43,7 +38,13 @@ public class TreasureItemsMenu extends Menu {
             event.setCancelled(true);
             updateItemsFromInventory();
             chest.setItems(items);
-            TreasureManager.getInstance().saveTreasures();
+
+            TreasureManager treasureManager = TreasureManager.getInstance();
+
+            if (treasureManager == null) return;
+
+            treasureManager.saveTreasures();
+
             player.sendMessage(MessageKeys.SUCCESS_SAVE.getMessage());
             player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5f, 1.0f);
             new TreasureEditMenu(MenuController.getMenuUtils(player), chest).open();

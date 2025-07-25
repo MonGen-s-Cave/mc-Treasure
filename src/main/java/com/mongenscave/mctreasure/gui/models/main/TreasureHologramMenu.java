@@ -108,7 +108,11 @@ public class TreasureHologramMenu extends Menu {
         chest.setHologramLines(hologramLines);
         chest.setHologramHeight(hologramHeight);
         chest.setupHologram();
-        TreasureManager.getInstance().saveTreasures();
+        TreasureManager treasureManager = TreasureManager.getInstance();
+
+        if (treasureManager == null) return;
+
+        treasureManager.saveTreasures();
     }
 
     @Override

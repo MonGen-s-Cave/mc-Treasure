@@ -22,7 +22,9 @@ public enum ConfigKeys {
     TRACKER_DIRECTIONS_LEFT("treasure-tracker.directions.left"),
     TRACKER_DIRECTIONS_RIGHT("treasure-tracker.directions.right"),
     TRACKER_MESSAGE("treasure-tracker.message"),
-    TRACKER_ITEM("treasure-tracker.item");
+    TRACKER_ITEM("treasure-tracker.item"),
+
+    PLACE_RANDOM("place-random");
 
     private static final Config config = McTreasure.getInstance().getConfiguration();
     private final String path;

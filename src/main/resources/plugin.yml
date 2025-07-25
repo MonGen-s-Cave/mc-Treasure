@@ -1,5 +1,5 @@
 name: mc-Treasure
-version: '1.0.8'
+version: '1.0.9'
 main: com.mongenscave.mctreasure.McTreasure
 api-version: '1.18'
 authors: [coma112]

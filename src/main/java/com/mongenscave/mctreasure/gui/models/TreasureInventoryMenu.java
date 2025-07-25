@@ -3,6 +3,7 @@ package com.mongenscave.mctreasure.gui.models;
 import com.mongenscave.mctreasure.api.TreasureCloseEvent;
 import com.mongenscave.mctreasure.data.MenuController;
 import com.mongenscave.mctreasure.gui.Menu;
+import com.mongenscave.mctreasure.identifiers.keys.ConfigKeys;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import com.mongenscave.mctreasure.processor.MessageProcessor;
@@ -31,7 +32,7 @@ public class TreasureInventoryMenu extends Menu {
         super(menuController);
         this.chest = chest;
         this.availableItems = Collections.synchronizedList(new ArrayList<>(chest.getItems()));
-        Collections.shuffle(this.availableItems);
+        if (ConfigKeys.PLACE_RANDOM.getBoolean()) Collections.shuffle(this.availableItems);
     }
 
     @Override
@@ -88,11 +89,19 @@ public class TreasureInventoryMenu extends Menu {
             return;
         }
 
-        int itemsToShow = Math.min(availableItems.size(), getSlots());
-        List<Integer> availableSlots = getRandomSlots(itemsToShow);
+        if (ConfigKeys.PLACE_RANDOM.getBoolean()) {
+            int itemsToShow = Math.min(availableItems.size(), getSlots());
+            List<Integer> availableSlots = getRandomSlots(itemsToShow);
 
-        for (int i = 0; i < itemsToShow; i++) {
-            inventory.setItem(availableSlots.get(i), availableItems.get(i).clone());
+            for (int i = 0; i < itemsToShow; i++) {
+                inventory.setItem(availableSlots.get(i), availableItems.get(i).clone());
+            }
+        } else {
+            int itemsToShow = Math.min(availableItems.size(), getSlots());
+
+            for (int i = 0; i < itemsToShow; i++) {
+                inventory.setItem(i, availableItems.get(i).clone());
+            }
         }
     }
 

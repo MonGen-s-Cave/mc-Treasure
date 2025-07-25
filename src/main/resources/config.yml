@@ -8,6 +8,8 @@ toast:
   message: "&#E2287B&lFOUND A TREASURE"
   material: "CHEST"
 
+place-random: true # If it's true it will place the items randomly in the chest!
+
 hook:
   hologram-type: "DecentHolograms" # DecentHolograms OR FancyHolograms
   fancy-holograms:

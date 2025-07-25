@@ -127,18 +127,16 @@ public class UpdateChecker implements Listener {
     private void startUpdateChecker() {
         long intervalTicks = CHECK_INTERVAL.toSeconds() * 20L;
 
-        plugin.getScheduler().runTaskTimerAsynchronously(() -> {
-            checkForUpdates().thenAccept(updateAvailable -> {
-                if (updateAvailable) {
-                    plugin.getScheduler().runTaskLaterAsynchronously(() -> Bukkit.getConsoleSender().sendMessage(MessageKeys.UPDATE_NOTIFY.getMessage()
-                            .replace("{your}", currentVersion)
-                            .replace("{latest}", latestVersion.get())), NOTIFICATION_DELAY_TICKS);
-                }
-            }).exceptionally(throwable -> {
-                LoggerUtils.warn("Failed to check for updates", throwable);
-                return null;
-            });
-        }, 0L, intervalTicks);
+        plugin.getScheduler().runTaskTimerAsynchronously(() -> checkForUpdates().thenAccept(updateAvailable -> {
+            if (updateAvailable) {
+                plugin.getScheduler().runTaskLaterAsynchronously(() -> Bukkit.getConsoleSender().sendMessage(MessageKeys.UPDATE_NOTIFY.getMessage()
+                        .replace("{your}", currentVersion)
+                        .replace("{latest}", latestVersion.get())), NOTIFICATION_DELAY_TICKS);
+            }
+        }).exceptionally(throwable -> {
+            LoggerUtils.warn("Failed to check for updates", throwable);
+            return null;
+        }), 0L, intervalTicks);
     }
 
     public void shutdown() {
