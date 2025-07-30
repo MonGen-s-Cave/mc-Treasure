@@ -71,3 +71,5 @@ effect-particles:
   sphere: "END_ROD"
   spiral: "END_ROD"
   phoenix: "END_ROD"
+
+cooldown-storage: "JSON" # MEMORY or JSON

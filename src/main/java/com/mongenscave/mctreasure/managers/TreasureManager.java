@@ -4,6 +4,7 @@ import com.mongenscave.mctreasure.McTreasure;
 import com.mongenscave.mctreasure.config.Config;
 import com.mongenscave.mctreasure.identifiers.ParticleTypes;
 import com.mongenscave.mctreasure.item.ItemFactory;
+import com.mongenscave.mctreasure.managers.cooldown.CooldownManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import com.mongenscave.mctreasure.utils.LocationUtils;
 import com.mongenscave.mctreasure.utils.LoggerUtils;
@@ -135,7 +136,6 @@ public class TreasureManager {
         });
 
         treasureChests.clear();
-        CooldownManager.getInstance().clearAll();
 
         Section treasuresSection = treasuresConfig.getSection("treasures");
         if (treasuresSection == null) return;

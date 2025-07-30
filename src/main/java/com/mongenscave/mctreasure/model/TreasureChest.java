@@ -9,7 +9,7 @@ import com.mongenscave.mctreasure.data.ParticleEffectConfiguration;
 import com.mongenscave.mctreasure.identifiers.ParticleTypes;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.identifiers.keys.PlaceholderKeys;
-import com.mongenscave.mctreasure.managers.CooldownManager;
+import com.mongenscave.mctreasure.managers.cooldown.CooldownManager;
 import com.mongenscave.mctreasure.managers.HologramManager;
 import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.particles.ParticleSystem;

@@ -24,7 +24,9 @@ public enum ConfigKeys {
     TRACKER_MESSAGE("treasure-tracker.message"),
     TRACKER_ITEM("treasure-tracker.item"),
 
-    PLACE_RANDOM("place-random");
+    PLACE_RANDOM("place-random"),
+
+    COOLDOWN_STORAGE("cooldown-storage");
 
     private static final Config config = McTreasure.getInstance().getConfiguration();
     private final String path;

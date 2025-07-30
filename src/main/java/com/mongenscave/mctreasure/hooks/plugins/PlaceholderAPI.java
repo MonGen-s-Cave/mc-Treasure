@@ -1,7 +1,7 @@
 package com.mongenscave.mctreasure.hooks.plugins;
 
 import com.mongenscave.mctreasure.McTreasure;
-import com.mongenscave.mctreasure.managers.CooldownManager;
+import com.mongenscave.mctreasure.managers.cooldown.CooldownManager;
 import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;

@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.mongenscave"
-version = "1.0.9"
+version = "1.1.0"
 
 repositories {
     maven {
@@ -40,7 +40,7 @@ dependencies {
     zap("io.github.revxrsal:lamp.common:4.0.0-rc.12")
     zap("io.github.revxrsal:lamp.brigadier:4.0.0-rc.12")
     zap("org.bstats:bstats-bukkit:3.0.2")
-    zap("com.github.Anon8281:UniversalScheduler:0.1.6")
+    implementation("com.github.Anon8281:UniversalScheduler:0.1.6")
     zap("dev.dejvokep:boosted-yaml:1.3.6")
     implementation("com.mongenscave:mc-ChatSetup:1.0.3")
 
