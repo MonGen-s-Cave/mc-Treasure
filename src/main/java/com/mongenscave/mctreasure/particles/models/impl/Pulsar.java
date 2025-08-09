@@ -36,18 +36,12 @@ public class Pulsar extends AbstractParticleEffect {
 
             Location particleLoc = createLocation(x, 0, z);
 
-            if (particleLoc != null) {
-                if (config.getParticleType() == Particle.DUST) spawnDustParticle(particleLoc, config.getParticleColor(), config.getParticleSize());
-                else spawnParticle(particleLoc, config.getParticleType(), config.getParticleSpeed());
-            }
+            if (particleLoc != null) spawnParticle(particleLoc);
 
             double y = pulseRadius * Math.sin(angle) * 0.5;
             Location particleLoc2 = createLocation(x, y, z);
 
-            if (particleLoc2 != null) {
-                if (config.getParticleType() == Particle.DUST) spawnDustParticle(particleLoc2, config.getParticleColor(), config.getParticleSize());
-                else spawnParticle(particleLoc2, config.getParticleType(), config.getParticleSpeed());
-            }
+            if (particleLoc2 != null) spawnParticle(particleLoc2);
         }
     }
 

@@ -39,10 +39,7 @@ public class Spiral extends AbstractParticleEffect {
 
                 Location particleLoc = createLocation(x, y, z);
 
-                if (particleLoc != null) {
-                    if (config.getParticleType() == Particle.DUST) spawnDustParticle(particleLoc, config.getParticleColor(), config.getParticleSize());
-                    else spawnParticle(particleLoc, config.getParticleType(), config.getParticleSpeed());
-                }
+                if (particleLoc != null) spawnParticle(particleLoc);
             }
         }
 
@@ -53,10 +50,7 @@ public class Spiral extends AbstractParticleEffect {
             double z = centerRadius * Math.sin(centerAngle);
 
             Location centerLoc = createLocation(x, 0, z);
-            if (centerLoc != null) {
-                if (config.getParticleType() == Particle.DUST) spawnDustParticle(centerLoc, config.getParticleColor(), config.getParticleSize());
-                else spawnParticle(centerLoc, config.getParticleType(), config.getParticleSpeed());
-            }
+            if (centerLoc != null) spawnParticle(centerLoc);
         }
     }
 

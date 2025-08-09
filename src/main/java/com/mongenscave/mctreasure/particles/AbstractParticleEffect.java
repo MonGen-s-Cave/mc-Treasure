@@ -4,15 +4,11 @@ import com.mongenscave.mctreasure.data.ParticleEffectConfiguration;
 import com.mongenscave.mctreasure.particles.models.ParticleEffect;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 public abstract class AbstractParticleEffect implements ParticleEffect, Cloneable {
-    @Getter
-    @Setter
-    protected ParticleEffectConfiguration config;
+    @Getter @Setter protected ParticleEffectConfiguration config;
     protected int ticks = 0;
     protected boolean complete = false;
 
@@ -31,27 +27,36 @@ public abstract class AbstractParticleEffect implements ParticleEffect, Cloneabl
         ticks++;
     }
 
-    protected void spawnParticle(Location location, Particle particle, double extra) {
-        if (location == null || location.getWorld() == null || particle == null) return;
+    protected void spawnParticle(Location location) {
+        if (location == null || location.getWorld() == null || config.getParticleType() == null) return;
 
         if (config.isVisibleToAll()) {
-            location.getWorld().spawnParticle(particle, location, 1, 0, 0, 0, extra);
+            location.getWorld().spawnParticle(config.getParticleType(), location, 1, 0, 0, 0, 0);
         } else if (config.getPlayer() != null && config.getPlayer().isOnline()) {
             Player player = config.getPlayer();
-            player.spawnParticle(particle, location, 1, 0, 0, 0, extra);
+            player.spawnParticle(config.getParticleType(), location, 1, 0, 0, 0, 0);
         }
     }
 
-    protected void spawnDustParticle(Location location, Color color, float size) {
-        if (location == null || location.getWorld() == null) return;
-
-        Particle.DustOptions dustOptions = new Particle.DustOptions(color, size);
+    protected void spawnParticle(Location location, int count) {
+        if (location == null || location.getWorld() == null || config.getParticleType() == null) return;
 
         if (config.isVisibleToAll()) {
-            location.getWorld().spawnParticle(Particle.DUST, location, 1, 0, 0, 0, 0, dustOptions);
+            location.getWorld().spawnParticle(config.getParticleType(), location, count, 0, 0, 0, 0);
         } else if (config.getPlayer() != null && config.getPlayer().isOnline()) {
             Player player = config.getPlayer();
-            player.spawnParticle(Particle.DUST, location, 1, 0, 0, 0, 0, dustOptions);
+            player.spawnParticle(config.getParticleType(), location, count, 0, 0, 0, 0);
+        }
+    }
+
+    protected void spawnParticle(Location location, double offsetX, double offsetY, double offsetZ) {
+        if (location == null || location.getWorld() == null || config.getParticleType() == null) return;
+
+        if (config.isVisibleToAll()) {
+            location.getWorld().spawnParticle(config.getParticleType(), location, 1, offsetX, offsetY, offsetZ, 0);
+        } else if (config.getPlayer() != null && config.getPlayer().isOnline()) {
+            Player player = config.getPlayer();
+            player.spawnParticle(config.getParticleType(), location, 1, offsetX, offsetY, offsetZ, 0);
         }
     }
 

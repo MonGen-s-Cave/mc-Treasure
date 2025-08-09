@@ -43,10 +43,7 @@ public class Phoenix extends AbstractParticleEffect {
 
                 Location particleLoc = createLocation(x, y, z);
 
-                if (particleLoc != null) {
-                    if (config.getParticleType() == Particle.DUST) spawnDustParticle(particleLoc, config.getParticleColor(), config.getParticleSize());
-                    else spawnParticle(particleLoc, config.getParticleType(), config.getParticleSpeed());
-                }
+                if (particleLoc != null) spawnParticle(particleLoc);
 
                 if (t > 0.3) {
                     for (int feather = 0; feather < 3; feather++) {
@@ -56,20 +53,14 @@ public class Phoenix extends AbstractParticleEffect {
 
                         Location featherLoc = createLocation(featherX, y, featherZ);
 
-                        if (featherLoc != null) {
-                            if (config.getParticleType() == Particle.DUST) spawnDustParticle(featherLoc, config.getParticleColor(), config.getParticleSize());
-                            else spawnParticle(featherLoc, config.getParticleType(), config.getParticleSpeed());
-                        }
+                        if (featherLoc != null) spawnParticle(featherLoc);
                     }
                 }
             }
         }
 
         Location bodyLoc = createLocation(0, wingHeight * 0.3, 0);
-        if (bodyLoc != null) {
-            if (config.getParticleType() == Particle.DUST) spawnDustParticle(bodyLoc, config.getParticleColor(), config.getParticleSize());
-            else spawnParticle(bodyLoc, config.getParticleType(), config.getParticleSpeed());
-        }
+        if (bodyLoc != null) spawnParticle(bodyLoc);
     }
 
     @Override

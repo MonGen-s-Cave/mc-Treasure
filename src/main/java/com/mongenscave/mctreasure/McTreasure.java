@@ -2,6 +2,7 @@ package com.mongenscave.mctreasure;
 
 import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
+import com.mongenscave.mctreasure.commands.CommandTreasure;
 import com.mongenscave.mctreasure.config.Config;
 import com.mongenscave.mctreasure.hooks.plugins.PlaceholderAPI;
 import com.mongenscave.mctreasure.listener.LocationSessionListener;
@@ -53,6 +54,7 @@ public final class McTreasure extends ZapperJavaPlugin {
         getServer().getPluginManager().registerEvents(new TreasureListener(), this);
         getServer().getPluginManager().registerEvents(new LocationSessionListener(), this);
         getServer().getPluginManager().registerEvents(new TrackerListener(), this);
+        getServer().getPluginManager().registerEvents(new CommandTreasure(), this);
 
         particleSystem = new ParticleSystem();
 

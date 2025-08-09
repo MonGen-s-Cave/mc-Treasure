@@ -44,10 +44,7 @@ public class Tornado extends AbstractParticleEffect {
 
                 Location particleLoc = createLocation(x, y + height % maxHeight, z);
 
-                if (particleLoc != null) {
-                    if (config.getParticleType() == Particle.DUST) spawnDustParticle(particleLoc, config.getParticleColor(), config.getParticleSize());
-                    else spawnParticle(particleLoc, config.getParticleType(), config.getParticleSpeed());
-                }
+                if (particleLoc != null) spawnParticle(particleLoc);
             }
         }
     }

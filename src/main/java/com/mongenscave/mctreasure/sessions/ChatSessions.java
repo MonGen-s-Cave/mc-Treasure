@@ -6,8 +6,6 @@ import com.mongenscave.mctreasure.gui.models.main.TreasureEditMenu;
 import com.mongenscave.mctreasure.gui.models.main.TreasureHologramMenu;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.model.TreasureChest;
-import com.mongenscave.mctreasure.model.TreasureChest;
-//import net.coma112.easierchatsetup.McChatSetup;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

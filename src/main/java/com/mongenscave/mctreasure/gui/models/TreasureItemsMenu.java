@@ -62,7 +62,10 @@ public class TreasureItemsMenu extends Menu {
         if (!isInitialized) {
             for (int i = 0; i < items.size() && i < getSlots() - 1; i++) {
                 ItemStack item = items.get(i);
-                if (item != null && item.getType() != Material.AIR) inventory.setItem(i, item.clone());
+                // Csak akkor klónozunk, ha tényleg kell - de itt is megtartjuk minden adatot
+                if (item != null && item.getType() != Material.AIR) {
+                    inventory.setItem(i, item);
+                }
             }
 
             isInitialized = true;
@@ -77,7 +80,9 @@ public class TreasureItemsMenu extends Menu {
         for (int i = 0; i < getSlots() - 1; i++) {
             ItemStack currentItem = inventory.getItem(i);
 
-            if (currentItem != null && currentItem.getType() != Material.AIR) updatedItems.add(currentItem.clone());
+            if (currentItem != null && currentItem.getType() != Material.AIR) {
+                updatedItems.add(currentItem);
+            }
         }
 
         this.items = updatedItems;

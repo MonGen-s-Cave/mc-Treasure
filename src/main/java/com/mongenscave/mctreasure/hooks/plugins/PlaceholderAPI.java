@@ -73,6 +73,10 @@ public class PlaceholderAPI {
                 return chest.getTimeLeftDisplay(player.getPlayer());
             }
 
+            args = params.split("_", 2);
+            if (args.length < 2) return "Invalid placeholder";
+
+            type = args[0].toLowerCase();
             String worldName = args[1];
 
             List<TreasureChest> chestsInWorld = TreasureManager.getInstance().getAllTreasures()

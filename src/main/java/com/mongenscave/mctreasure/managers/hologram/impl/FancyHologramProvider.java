@@ -40,18 +40,14 @@ public class FancyHologramProvider implements HologramProvider {
 
     @Override
     public void createHologram(@NotNull String id, @NotNull Location location, List<String> lines) {
-        if (hologramExists(id)) {
-            removeHologram(id);
-        }
+        if (hologramExists(id)) removeHologram(id);
 
         try {
             TextHologramData hologramData = new TextHologramData(id, location);
 
             hologramData.setBillboard(billboard);
 
-            if (backgroundColor != null) {
-                hologramData.setBackground(backgroundColor);
-            }
+            if (backgroundColor != null) hologramData.setBackground(backgroundColor);
 
             hologramData.setText(lines);
             hologramData.setPersistent(false);

@@ -7,6 +7,7 @@ import com.mongenscave.mctreasure.identifiers.keys.ConfigKeys;
 import com.mongenscave.mctreasure.identifiers.keys.MessageKeys;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import com.mongenscave.mctreasure.processor.MessageProcessor;
+import com.mongenscave.mctreasure.utils.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -40,18 +41,30 @@ public class TreasureInventoryMenu extends Menu {
         Player player = (Player) event.getWhoClicked();
         ItemStack clickedItem = event.getCurrentItem();
 
-        if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
+        if (event.getClickedInventory() != inventory) return;
 
+        if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
         event.setCancelled(true);
 
         if (event.getClick().isLeftClick() || event.getClick().isRightClick()) {
             if (hasAvailableSlot(player)) {
-                ItemStack takenItem = clickedItem.clone();
+                ItemStack takenItem = ItemUtils.removeTrackingData(clickedItem.clone());
+
                 player.getInventory().addItem(takenItem);
                 player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 0.5f, 1.2f);
                 inventory.setItem(event.getSlot(), new ItemStack(Material.AIR));
 
                 itemsTaken.add(takenItem);
+
+                synchronized (availableItems) {
+                    for (int i = 0; i < availableItems.size(); i++) {
+                        ItemStack availableItem = availableItems.get(i);
+                        if (ItemUtils.removeTrackingData(availableItem).isSimilar(takenItem)) {
+                            availableItems.remove(i);
+                            break;
+                        }
+                    }
+                }
 
                 player.sendMessage(MessageKeys.ITEM_OBTAINED.getMessage());
 
@@ -83,24 +96,26 @@ public class TreasureInventoryMenu extends Menu {
     private void placeItems() {
         inventory.clear();
 
-        if (availableItems.isEmpty()) {
-            ItemStack noItemsItem = new ItemStack(Material.PAPER);
-            inventory.setItem(getSlots() / 2, noItemsItem);
-            return;
-        }
-
-        if (ConfigKeys.PLACE_RANDOM.getBoolean()) {
-            int itemsToShow = Math.min(availableItems.size(), getSlots());
-            List<Integer> availableSlots = getRandomSlots(itemsToShow);
-
-            for (int i = 0; i < itemsToShow; i++) {
-                inventory.setItem(availableSlots.get(i), availableItems.get(i).clone());
+        synchronized (availableItems) {
+            if (availableItems.isEmpty()) {
+                ItemStack noItemsItem = new ItemStack(Material.PAPER);
+                inventory.setItem(getSlots() / 2, noItemsItem);
+                return;
             }
-        } else {
-            int itemsToShow = Math.min(availableItems.size(), getSlots());
 
-            for (int i = 0; i < itemsToShow; i++) {
-                inventory.setItem(i, availableItems.get(i).clone());
+            if (ConfigKeys.PLACE_RANDOM.getBoolean()) {
+                int itemsToShow = Math.min(availableItems.size(), getSlots());
+                List<Integer> availableSlots = getRandomSlots(itemsToShow);
+
+                for (int i = 0; i < itemsToShow; i++) {
+                    inventory.setItem(availableSlots.get(i), availableItems.get(i).clone());
+                }
+            } else {
+                int itemsToShow = Math.min(availableItems.size(), getSlots());
+
+                for (int i = 0; i < itemsToShow; i++) {
+                    inventory.setItem(i, availableItems.get(i).clone());
+                }
             }
         }
     }

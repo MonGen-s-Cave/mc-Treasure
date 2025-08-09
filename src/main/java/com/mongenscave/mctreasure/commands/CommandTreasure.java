@@ -10,12 +10,13 @@ import com.mongenscave.mctreasure.managers.TreasureManager;
 import com.mongenscave.mctreasure.model.TreasureChest;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Subcommand;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 import revxrsal.commands.orphan.OrphanCommand;
 
-public class CommandTreasure implements OrphanCommand {
+public class CommandTreasure implements OrphanCommand, Listener {
     private static final McTreasure plugin = McTreasure.getInstance();
 
     @Subcommand("reload")
